@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  message     String
+  createdAt   DateTime @default(now())
+  subscribers NotificationSubscriber[]
+}
+
+model Subscriber {
+  id            String                  @id @default(uuid())
+  email         String                  @unique
+  createdAt     DateTime                @default(now())
+  watchlists    Watchlist[]
+  notifications NotificationSubscriber[]
+}
+
+model NotificationSubscriber {
+  id             String       @id @default(uuid())
+  notification   Notification @relation(fields: [notificationId], references: [id])
+  notificationId String
+  subscriber     Subscriber   @relation(fields: [subscriberId], references: [id])
+  subscriberId   String
+  isRead         Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+
+  @@unique([notificationId, subscriberId])
+}
+
+model Watchlist {
+  id           String          @id @default(uuid())
+  name         String
+  subscriber   Subscriber      @relation(fields: [subscriberId], references: [id])
+  subscriberId String
+  items        WatchlistItem[]
+  createdAt    DateTime        @default(now())
+}
+
+model WatchlistItem {
+  id          String   @id @default(uuid())
+  watchlist   Watchlist @relation(fields: [watchlistId], references: [id])
+  watchlistId String
+  ticker      String
+  createdAt   DateTime @default(now())
+}
+
+model Report {
+  id            String            @id @default(uuid())
+  title         String
+  summary       String
+  ticker        String
+  createdAt     DateTime          @default(now())
+}
+
+model Market {
+  id        String             @id @default(uuid())
+  symbol    String             @unique
+  name      String?
+  timezone  String?
+  email     String
+
+  weeklyData MarketWeeklyData[]
+}
+
+model MarketWeeklyData {
+  id             String   @id @default(uuid())
+  marketId       String
+  date           DateTime
+  open           Float
+  high           Float
+  low            Float
+  close          Float
+  adjustedClose  Float
+  volume         BigInt
+  dividendAmount Float
+
+  market Market @relation(fields: [marketId], references: [id])
+
+  @@unique([marketId, date])
+}
