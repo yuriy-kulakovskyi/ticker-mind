@@ -20,11 +20,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.18.0",
     "@prisma/extension-accelerate": "^2.0.2",
+    "axios": "^1.13.1",
     "prisma": "^6.18.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"

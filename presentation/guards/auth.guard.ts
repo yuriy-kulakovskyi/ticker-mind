@@ -1,37 +1,34 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
+import { firstValueFrom } from "rxjs";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  async canActivate(
-    context: ExecutionContext
-  ): Promise<boolean> {
+  constructor(private readonly httpService: HttpService) {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const token = request.headers["authorization"]?.split(" ")[1];
+
+    if (!token) throw new ForbiddenException("Authorization token missing");
+
     try {
-      const request = context.switchToHttp().getRequest();
-      const token = request.headers["authorization"]?.split(" ")[1];
+      const { data } = await firstValueFrom(
+        this.httpService.post(process.env.VERIFY_TOKEN_URL || "", {
+          token,
+          api_key: process.env.ALTERNATIVE_AUTH_API_KEY,
+        })
+      );
 
-      const response = await fetch(process.env.VERIFY_TOKEN_URL || "", {
-        method: "POST",
-        body: JSON.stringify({ 
-          token: token,
-          api_key: process.env.ALTERNATIVE_AUTH_API_KEY
-        }),
-        headers: { "Content-Type": "application/json" }
-      })
-
-      if (!response.ok) {
-        throw new ForbiddenException('Invalid or expired token');
-      }
-
-      const data = await response.json();
-
-      if (!data?.user) {
-        throw new ForbiddenException('User not found');
-      }
+      if (!data?.user) throw new ForbiddenException("User not found");
 
       request.user = data.user;
       return true;
     } catch (error) {
-      throw new ForbiddenException('Authentication failed');
+      if (error.response?.status === 401)
+        throw new ForbiddenException("Invalid or expired token");
+
+      throw new ForbiddenException("Authentication failed");
     }
   }
 }

@@ -7,6 +7,8 @@ import { SsrModule } from 'modules/ssr/ssr.module';
 import { SubscriberModule } from 'modules/subscriber/subscriber.module';
 import { WatchlistModule } from 'modules/watchlist/watchlist.module';
 import { PrismaService } from '../prisma/prisma.service';
+import { HttpModule } from '@nestjs/axios';
+import { AuthGuard } from 'presentation/guards/auth.guard';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { PrismaService } from '../prisma/prisma.service';
     SubscriberModule,
     SsrModule,
     ReportModule,
+    HttpModule,
   ],
-  providers: [PrismaService],
+  providers: [PrismaService, AuthGuard],
 })
 
 export class AppModule {}
