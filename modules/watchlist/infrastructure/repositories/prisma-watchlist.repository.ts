@@ -33,7 +33,7 @@ export class PrismaWatchlistRepository implements WatchListRepository {
   }
 
   async addItem(watchlistId: string, ticker: string): Promise<WatchList> {
-    const watchlist = await this.prisma.watchlist.update({
+    return this.prisma.watchlist.update({
       where: { id: watchlistId },
       data: {
         items: {
@@ -42,7 +42,6 @@ export class PrismaWatchlistRepository implements WatchListRepository {
       },
       include: { items: true }
     });
-    return watchlist;
   }
 
   async removeItem(watchlistId: string, ticker: string): Promise<WatchList | null> {
@@ -71,9 +70,9 @@ export class PrismaWatchlistRepository implements WatchListRepository {
     });
   }
 
-  async findById(id: string): Promise<WatchList | null> {
+  async findById(id: string, subscriberId: string): Promise<WatchList | null> {
     return this.prisma.watchlist.findUnique({
-      where: { id },
+      where: { id, subscriberId },
       include: { items: true }
     });
   }
