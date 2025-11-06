@@ -28,21 +28,21 @@ export class WatchlistController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() dto: UpdateWatchlistDto, @Request() req) {
-    return this.watchlistUseCase.updateWatchlist(id, dto, req.user.id);
+    return this.watchlistUseCase.updateWatchlist(id, dto, req.user.user_id);
   }
 
   @Post(':id/tickers')
   async addTicker(@Param('id') id: string, @Body() dto: AddTickerDto, @Request() req) {
-    return this.watchlistUseCase.addTicker(id, dto.ticker, req.user.id);
+    return this.watchlistUseCase.addTicker(id, dto.ticker, req.user.user_id);
   }
 
   @Delete(':id/tickers')
   async removeTicker(@Param('id') id: string, @Body() dto: RemoveTickerDto, @Request() req) {
-    return this.watchlistUseCase.removeTicker(id, dto.ticker, req.user.id);
+    return this.watchlistUseCase.removeTicker(id, dto.ticker, req.user.user_id);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Request() req) {
-    return this.watchlistUseCase.deleteWatchlist(id, req.user.id);
+    return this.watchlistUseCase.deleteWatchlist(id, req.user.user_id);
   }
 }
