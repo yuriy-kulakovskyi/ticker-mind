@@ -5,6 +5,7 @@ import { WatchlistService } from "./application/services/watchlist.service";
 import { WatchList } from "./domain/entities/watchlist.entity";
 import { PrismaWatchlistRepository } from "./infrastructure/repositories/prisma-watchlist.repository";
 import { PrismaModule } from "prisma/prisma.module";
+import { WatchlistUseCase } from "./application/usecases/watchlist.usecase";
 
 @Module({
   imports: [HttpModule, PrismaModule],
@@ -12,6 +13,7 @@ import { PrismaModule } from "prisma/prisma.module";
   providers: [
     WatchlistService,
     WatchList,
+    WatchlistUseCase,
     {
       provide: 'WatchListRepository',
       useClass: PrismaWatchlistRepository,
