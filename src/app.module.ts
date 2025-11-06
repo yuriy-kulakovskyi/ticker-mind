@@ -18,9 +18,9 @@ import { AuthGuard } from 'presentation/guards/auth.guard';
     SubscriberModule,
     SsrModule,
     ReportModule,
-    HttpModule,
+    HttpModule
   ],
-  providers: [PrismaService, AuthGuard],
+  providers: [PrismaService, AuthGuard]
 })
 
 export class AppModule {}
