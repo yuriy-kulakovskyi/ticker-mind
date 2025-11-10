@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, Param } from "@nestjs/common";
+import { Controller, Get, Post, Query } from "@nestjs/common";
 import { GetMarketDataQueryDto } from "shared/dto/market/get-market-data.dto";
 import { SyncMarketDataUseCase } from "../application/usecases/sync-market-data.usecase";
 import { GetMarketDataUseCase } from "../application/usecases/get-market-data.usecase";
