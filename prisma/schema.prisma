@@ -60,28 +60,22 @@ model Report {
 }
 
 model Market {
-  id        String             @id @default(uuid())
-  symbol    String             @unique
-  name      String?
-  timezone  String?
-  email     String
-
-  weeklyData MarketWeeklyData[]
+  id            String        @id @default(uuid())
+  symbol        String        @unique
+  lastRefreshed DateTime
+  timeZone      String
+  info          String
+  candles       Candle[]
 }
 
-model MarketWeeklyData {
-  id             String   @id @default(uuid())
-  marketId       String
-  date           DateTime
-  open           Float
-  high           Float
-  low            Float
-  close          Float
-  adjustedClose  Float
-  volume         BigInt
-  dividendAmount Float
-
-  market Market @relation(fields: [marketId], references: [id])
-
-  @@unique([marketId, date])
+model Candle {
+  id         String   @id @default(uuid())
+  marketId   String
+  date       DateTime
+  open       Float
+  high       Float
+  low        Float
+  close      Float
+  volume     Int
+  Market     Market   @relation(fields: [marketId], references: [id])
 }
