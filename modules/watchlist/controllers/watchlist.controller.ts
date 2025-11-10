@@ -21,7 +21,7 @@ export class WatchlistController {
     return this.watchlistUseCase.getWatchlists(req.user.user_id);
   }
 
-    @Get(':id')
+  @Get(':id')
   async findOne(@Param('id') id: string, @Request() req) {
     return this.watchlistUseCase.getWatchlistById(id, req.user.user_id);
   }

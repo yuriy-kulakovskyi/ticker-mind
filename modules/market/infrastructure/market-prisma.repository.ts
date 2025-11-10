@@ -46,7 +46,7 @@ export class MarketPrismaRepository implements IMarketStorage {
 
     if (!market) {
       this.logger.warn(`Market data not found for symbol: ${symbol}`);
-      throw new NotFoundException(`Market data for symbol ${symbol} not found`);
+      throw new NotFoundException(`Market data for symbol '${symbol}' not found`);
     }
 
     const weeklyData: MarketCandle[] = market.candles.map(candle =>

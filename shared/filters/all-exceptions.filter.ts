@@ -23,11 +23,24 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getResponse()
         : (exception as Error).message || 'Internal server error';
 
+
+    let detail: string;
+
+    if (typeof message === 'string') {
+      detail = message;
+    } else if (typeof message === 'object' && message !== null) {
+      detail =
+        (message as { message?: string }).message || 'Internal server error';
+    } else {
+      detail = 'Internal server error';
+    }
+
     response.status(status).json({
       success: false,
       statusCode: status,
       timestamp: new Date().toISOString(),
-      message,
+      detail,
+      title: HttpStatus[status],
     });
   }
 }
