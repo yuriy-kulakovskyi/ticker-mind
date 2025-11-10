@@ -39,7 +39,9 @@ export class MarketPrismaRepository implements IMarketStorage {
     
     const market = await this.prisma.market.findUnique({
       where: { symbol },
-      include: { candles: true },
+      include: { candles: {
+        orderBy: { date: 'desc' }
+      } },
     });
 
     if (!market) {
