@@ -1,26 +1,16 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { WatchListRepository } from "./watchlist.repository";
 import { PrismaService } from "prisma/prisma.service";
 import { WatchList } from "modules/watchlist/domain/entities/watchlist.entity";
 import { ICreateWatchlist } from "modules/watchlist/domain/interfaces/create-watchlist.interface";
-import { SubscriberService } from "modules/subscriber/application/services/subscriber.service";
 
 @Injectable()
 export class PrismaWatchlistRepository implements WatchListRepository {
   constructor(
     private prisma: PrismaService,
-    private subscriberService: SubscriberService
   ) {}
 
   async create(data: ICreateWatchlist): Promise<WatchList> {
-    const subscriber = await this.prisma.subscriber.findUnique({
-      where: { id: data.subscriberId }
-    });
-
-    if (!subscriber) {
-      await this.subscriberService.createSubscriber(data.subscriberId, data.subscriberEmail);
-    }
-    
     return this.prisma.watchlist.create({
       data: {
         name: data.name,
@@ -31,6 +21,17 @@ export class PrismaWatchlistRepository implements WatchListRepository {
   }
 
   async addItem(watchlistId: string, ticker: string): Promise<WatchList> {
+    const existing = await this.prisma.watchlistItem.findFirst({
+      where: {
+        watchlistId,
+        ticker
+      }
+    });
+
+    if (existing) {
+      throw new ConflictException('Ticker already exists in watchlist');
+    }
+
     return this.prisma.watchlist.update({
       where: { id: watchlistId },
       data: {
@@ -49,11 +50,12 @@ export class PrismaWatchlistRepository implements WatchListRepository {
         ticker
       }
     });
-    if (item) {
-      await this.prisma.watchlistItem.delete({
-        where: { id: item.id }
-      });
+
+    if (!item) {
+      throw new NotFoundException('Ticker not found in watchlist');
     }
+
+    await this.prisma.watchlistItem.delete({ where: { id: item.id } });
 
     return this.prisma.watchlist.findUnique({
       where: { id: watchlistId },
@@ -78,7 +80,8 @@ export class PrismaWatchlistRepository implements WatchListRepository {
   async update(id: string, data: WatchList): Promise<WatchList> {
     return this.prisma.watchlist.update({
       where: { id },
-      data
+      data: { name: data.name },
+      include: { items: true }
     });
   }
 

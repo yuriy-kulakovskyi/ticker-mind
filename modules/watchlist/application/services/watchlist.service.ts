@@ -1,14 +1,26 @@
 import { Inject, Injectable, NotFoundException, ForbiddenException } from "@nestjs/common";
+import { SubscriberService } from "modules/subscriber/application/services/subscriber.service";
 import { WatchListRepository } from "modules/watchlist/infrastructure/repositories/watchlist.repository";
 
 @Injectable()
 export class WatchlistService {
   constructor(
     @Inject('WatchListRepository')
-    private readonly repo: WatchListRepository
+    private readonly repo: WatchListRepository,
+    private readonly subscriberService: SubscriberService
   ) {}
 
   async createWatchlist(name: string, subscriberId: string, subscriberEmail: string) {
+    try {
+      await this.subscriberService.getSubscriberById(subscriberId);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        await this.subscriberService.createSubscriber(subscriberId, subscriberEmail);
+      } else {
+        throw error; 
+      }
+    }
+
     return this.repo.create({ name, subscriberId, subscriberEmail });
   }
 
