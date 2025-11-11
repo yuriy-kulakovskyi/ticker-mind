@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { SubscriberRepository } from "./subscriber.repository";
 import { PrismaService } from "prisma/prisma.service";
 import { Subscriber } from "modules/subscriber/domain/entities/subscriber.entity";
@@ -9,9 +9,18 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
     private prisma: PrismaService
   ) {}
 
-  async create(email: string, displayName?: string): Promise<Subscriber> {
+  async create(id: string, email: string, displayName?: string): Promise<Subscriber> {
+    const existing = await this.prisma.subscriber.findUnique({
+      where: { email }
+    });
+
+    if (existing) {
+      throw new ConflictException("Subscriber with this email already exists");
+    }
+
     const subscriber = await this.prisma.subscriber.create({
       data: {
+        id,
         email,
         displayName
       }
@@ -47,7 +56,7 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
     return { message: "Subscriber deleted successfully" };
   }
 
-  async findById(id: string): Promise<Subscriber> {
+  async findById(id: string): Promise<Partial<Subscriber>> {
     const subscriber = await this.prisma.subscriber.findUnique({
       where: { id }
     });
@@ -62,5 +71,23 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
       subscriber.displayName,
       subscriber.createdAt
     );
+  }
+
+  async getMe(id: string): Promise<Subscriber> {
+    const subscriber = await this.prisma.subscriber.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+        createdAt: true
+      }
+    });
+
+    if (!subscriber) {
+      throw new NotFoundException("Subscriber not found");
+    }
+
+    return subscriber;
   }
 }

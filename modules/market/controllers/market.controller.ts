@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query } from "@nestjs/common";
+import { Controller, Get, HttpCode, HttpStatus, Post, Query } from "@nestjs/common";
 import { GetMarketDataQueryDto } from "shared/dto/market/get-market-data.dto";
 import { SyncMarketDataUseCase } from "../application/usecases/sync-market-data.usecase";
 import { GetMarketDataUseCase } from "../application/usecases/get-market-data.usecase";
@@ -16,6 +16,7 @@ export class MarketController {
    * Retrieves market data from database (fast, cached)
    */
   @Get()
+  @HttpCode(HttpStatus.OK)
   getMarketData(@Query() query: GetMarketDataQueryDto) {
     return this.getMarketDataUseCase.execute(query.ticker);
   }
@@ -25,6 +26,7 @@ export class MarketController {
    * Fetches fresh data from external API and saves to database (slow, deliberate)
    */
   @Post("sync")
+  @HttpCode(HttpStatus.CREATED)
   syncMarketData(@Query() query: GetMarketDataQueryDto) {
     return this.syncMarketDataUseCase.execute(query.ticker);
   }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "presentation/guards/auth.guard";
 import { AddTickerDto } from "shared/dto/watchlist/add-ticker.dto";
 import { CreateWatchlistDto } from "shared/dto/watchlist/create-watchlist.dto";
@@ -26,58 +26,44 @@ export class WatchlistController {
   ) {}
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateWatchlistDto, @Request() req) {
-    if (req.user.user_id) {
-      return this.createWatchlistUseCase.execute(dto.name, req.user.user_id);
-    }
-    throw new NotFoundException('User is not found');
+    return this.createWatchlistUseCase.execute(dto.name, req.user.user_id, req.user.email);
   }
 
   @Get()
+  @HttpCode(HttpStatus.OK)
   async findAll(@Request() req) {
-    if (req.user.user_id) {
-      return this.getWatchlistsUseCase.execute(req.user.user_id);
-    }
-    throw new NotFoundException('User is not found');
+    return this.getWatchlistsUseCase.execute(req.user.user_id);
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   async findOne(@Param('id') id: string, @Request() req) {
-    if (req.user.user_id) {
-      return this.getWatchlistByIdUseCase.execute(id, req.user.user_id);
-    }
-    throw new NotFoundException('User is not found');
+    return this.getWatchlistByIdUseCase.execute(id, req.user.user_id);
   }
 
   @Put(':id')
+  @HttpCode(HttpStatus.OK)
   async update(@Param('id') id: string, @Body() dto: UpdateWatchlistDto, @Request() req) {
-    if (req.user.user_id) {
-      return this.updateWatchlistUseCase.execute(id, dto, req.user.user_id);
-    }
-    throw new NotFoundException('User is not found');
+    return this.updateWatchlistUseCase.execute(id, dto, req.user.user_id);
   }
 
   @Post(':id/tickers')
+  @HttpCode(HttpStatus.OK)
   async addTicker(@Param('id') id: string, @Body() dto: AddTickerDto, @Request() req) {
-    if (req.user.user_id) {
-      return this.addTickerUseCase.execute(id, dto.ticker, req.user.user_id);
-    }
-    throw new NotFoundException('User is not found');
+    return this.addTickerUseCase.execute(id, dto.ticker, req.user.user_id);
   }
 
   @Delete(':id/tickers')
+  @HttpCode(HttpStatus.OK)
   async removeTicker(@Param('id') id: string, @Body() dto: RemoveTickerDto, @Request() req) {
-    if (req.user.user_id) {
-      return this.removeTickerUseCase.execute(id, dto.ticker, req.user.user_id);
-    }
-    throw new NotFoundException('User is not found');
+    return this.removeTickerUseCase.execute(id, dto.ticker, req.user.user_id);
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.OK)
   async remove(@Param('id') id: string, @Request() req) {
-    if (req.user.user_id) {
-      return this.deleteWatchlistUseCase.execute(id, req.user.user_id);
-    }
-    throw new NotFoundException('User is not found');
+    return this.deleteWatchlistUseCase.execute(id, req.user.user_id);
   }
 }

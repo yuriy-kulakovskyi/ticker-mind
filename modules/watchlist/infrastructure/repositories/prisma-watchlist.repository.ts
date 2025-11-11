@@ -3,14 +3,24 @@ import { WatchListRepository } from "./watchlist.repository";
 import { PrismaService } from "prisma/prisma.service";
 import { WatchList } from "modules/watchlist/domain/entities/watchlist.entity";
 import { ICreateWatchlist } from "modules/watchlist/domain/interfaces/create-watchlist.interface";
+import { SubscriberService } from "modules/subscriber/application/services/subscriber.service";
 
 @Injectable()
 export class PrismaWatchlistRepository implements WatchListRepository {
   constructor(
-    private prisma: PrismaService
+    private prisma: PrismaService,
+    private subscriberService: SubscriberService
   ) {}
 
   async create(data: ICreateWatchlist): Promise<WatchList> {
+    const subscriber = await this.prisma.subscriber.findUnique({
+      where: { id: data.subscriberId }
+    });
+
+    if (!subscriber) {
+      await this.subscriberService.createSubscriber(data.subscriberId, data.subscriberEmail);
+    }
+    
     return this.prisma.watchlist.create({
       data: {
         name: data.name,

@@ -8,7 +8,7 @@ export class CreateSubscriberUseCase {
     private readonly subscriberService: SubscriberService
   ) {}
 
-  async execute(email: string, displayName?: string): Promise<Subscriber> {
-    return this.subscriberService.createSubscriber(email, displayName);
+  async execute(id: string, email: string, displayName?: string): Promise<Subscriber> {
+    return this.subscriberService.createSubscriber(id, email, displayName);
   }
 }

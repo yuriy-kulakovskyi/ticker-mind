@@ -25,9 +25,9 @@ model Subscriber {
 
 model NotificationSubscriber {
   id             String       @id @default(uuid())
-  notification   Notification @relation(fields: [notificationId], references: [id])
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
   notificationId String
-  subscriber     Subscriber   @relation(fields: [subscriberId], references: [id])
+  subscriber     Subscriber   @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
   subscriberId   String
   isRead         Boolean      @default(false)
   createdAt      DateTime     @default(now())
@@ -38,7 +38,7 @@ model NotificationSubscriber {
 model Watchlist {
   id           String          @id @default(uuid())
   name         String
-  subscriber   Subscriber      @relation(fields: [subscriberId], references: [id])
+  subscriber   Subscriber      @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
   subscriberId String
   items        WatchlistItem[]
   createdAt    DateTime        @default(now())
@@ -46,7 +46,7 @@ model Watchlist {
 
 model WatchlistItem {
   id          String   @id @default(uuid())
-  watchlist   Watchlist @relation(fields: [watchlistId], references: [id])
+  watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
   watchlistId String
   ticker      String
   createdAt   DateTime @default(now())
@@ -78,5 +78,5 @@ model Candle {
   low        Float
   close      Float
   volume     Int
-  Market     Market   @relation(fields: [marketId], references: [id])
+  Market     Market   @relation(fields: [marketId], references: [id], onDelete: Cascade)
 }

@@ -12,9 +12,10 @@ import { UpdateWatchlistUseCase } from "./application/usecases/update-watchlist.
 import { AddTickerUseCase } from "./application/usecases/add-ticker.usecase";
 import { RemoveTickerUseCase } from "./application/usecases/remove-ticker.usecase";
 import { DeleteWatchlistUseCase } from "./application/usecases/delete-watchlist.usecase";
+import { SubscriberModule } from "modules/subscriber/subscriber.module";
 
 @Module({
-  imports: [HttpModule, PrismaModule],
+  imports: [HttpModule, PrismaModule, SubscriberModule],
   controllers: [WatchlistController],
   providers: [
     WatchlistService,
@@ -30,7 +31,7 @@ import { DeleteWatchlistUseCase } from "./application/usecases/delete-watchlist.
     UpdateWatchlistUseCase,
     AddTickerUseCase,
     RemoveTickerUseCase,
-    DeleteWatchlistUseCase
+    DeleteWatchlistUseCase,
   ],
 })
 

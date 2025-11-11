@@ -6,6 +6,7 @@ import { ReadSubscriberUseCase } from "../application/usecases/read-subscriber.u
 import { CreateSubscriberDto } from "shared/dto/subscriber/create-subscriber.dto";
 import { UpdateSubscriberDto } from "shared/dto/subscriber/update-subscriber.dto";
 import { AuthGuard } from "presentation/guards/auth.guard";
+import { GetMeUseCase } from "../application/usecases/get-me.usecase";
 
 @Controller("subscriber")
 export class SubscriberController {
@@ -13,14 +14,15 @@ export class SubscriberController {
     private readonly updateSubscriberUseCase: UpdateSubscriberUseCase,
     private readonly createSubscriberUseCase: CreateSubscriberUseCase,
     private readonly deleteSubscriberUseCase: DeleteSubscriberUseCase,
-    private readonly readSubscriberUseCase: ReadSubscriberUseCase
+    private readonly readSubscriberUseCase: ReadSubscriberUseCase,
+    private readonly getMeUseCase: GetMeUseCase
   ) {}
 
   @Get("/me")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   async getMySubscriber(@Request() req) {
-    return this.readSubscriberUseCase.execute(req.user.user_id);
+    return this.getMeUseCase.execute(req.user.user_id);
   }
 
   @Get("/:id")
@@ -33,7 +35,7 @@ export class SubscriberController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
   async createSubscriber(@Body() createSubscriberDto: CreateSubscriberDto, @Request() req) {
-    return this.createSubscriberUseCase.execute(req.user.email, createSubscriberDto.displayName);
+    return this.createSubscriberUseCase.execute(req.user.user_id, req.user.email, createSubscriberDto.displayName);
   }
 
   @Patch()

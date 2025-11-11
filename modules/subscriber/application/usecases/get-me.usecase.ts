@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import { SubscriberService } from "../services/subscriber.service";
 import { Subscriber } from "modules/subscriber/domain/entities/subscriber.entity";
+import { SubscriberService } from "../services/subscriber.service";
 
 @Injectable()
-export class ReadSubscriberUseCase {
+export class GetMeUseCase {
   constructor(
     private readonly subscriberService: SubscriberService
   ) {}
 
-  async execute(id: string): Promise<Partial<Subscriber>> {
-    return this.subscriberService.getSubscriberById(id);
+  async execute(userId: string): Promise<Subscriber> {
+    return this.subscriberService.getMe(userId);
   }
 }
