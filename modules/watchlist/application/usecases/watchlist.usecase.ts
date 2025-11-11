@@ -5,8 +5,8 @@ import { WatchlistService } from "../services/watchlist.service";
 export class WatchlistUseCase {
   constructor(private readonly watchlistService: WatchlistService) {}
 
-  async createWatchlist(name: string, subscriberId: string, email?: string) {
-    return this.watchlistService.createWatchlist(name, subscriberId, email);
+  async createWatchlist(name: string, subscriberId: string) {
+    return this.watchlistService.createWatchlist(name, subscriberId);
   }
 
   async addTicker(watchlistId: string, ticker: string, userId: string) {

@@ -17,6 +17,7 @@ model Notification {
 model Subscriber {
   id            String                  @id @default(uuid())
   email         String                  @unique
+  displayName   String?
   createdAt     DateTime                @default(now())
   watchlists    Watchlist[]
   notifications NotificationSubscriber[]

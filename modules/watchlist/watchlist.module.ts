@@ -17,7 +17,7 @@ import { WatchlistUseCase } from "./application/usecases/watchlist.usecase";
     {
       provide: 'WatchListRepository',
       useClass: PrismaWatchlistRepository,
-    },
+    }
   ],
 })
 

@@ -8,8 +8,8 @@ export class WatchlistService {
     private readonly repo: WatchListRepository
   ) {}
 
-  async createWatchlist(name: string, subscriberId: string, email?: string) {
-    return this.repo.create({ name, subscriberId, email });
+  async createWatchlist(name: string, subscriberId: string) {
+    return this.repo.create({ name, subscriberId });
   }
 
   async addTicker(watchlistId: string, ticker: string, userId: string) {
