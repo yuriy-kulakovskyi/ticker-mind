@@ -1,7 +1,8 @@
 import { WatchList } from "modules/watchlist/domain/entities/watchlist.entity";
+import { ICreateWatchlist } from "modules/watchlist/domain/interfaces/create-watchlist.interface";
 
 export interface WatchListRepository {
-  create(data: { name: string; subscriberId: string }): Promise<WatchList>;
+  create(data: ICreateWatchlist): Promise<WatchList>;
   addItem(watchlistId: string, ticker: string): Promise<WatchList | null>;
   removeItem(watchlistId: string, ticker: string): Promise<WatchList | null>;
   findAllByUser(subscriberId: string): Promise<WatchList[]>;

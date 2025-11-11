@@ -46,7 +46,7 @@ export class WatchlistService {
     return list;
   }
 
-  async updateWatchlist(id: string, data: { name?: string }, userId: string) {
+  async updateWatchlist(id: string, data: { name: string }, userId: string) {
     const watchlist = await this.repo.findById(id, userId);
     
     if (!watchlist) {

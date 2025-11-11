@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { WatchListRepository } from "./watchlist.repository";
 import { PrismaService } from "prisma/prisma.service";
 import { WatchList } from "modules/watchlist/domain/entities/watchlist.entity";
+import { ICreateWatchlist } from "modules/watchlist/domain/interfaces/create-watchlist.interface";
 
 @Injectable()
 export class PrismaWatchlistRepository implements WatchListRepository {
@@ -9,7 +10,7 @@ export class PrismaWatchlistRepository implements WatchListRepository {
     private prisma: PrismaService
   ) {}
 
-  async create(data: { name: string; subscriberId: string }): Promise<WatchList> {
+  async create(data: ICreateWatchlist): Promise<WatchList> {
     return this.prisma.watchlist.create({
       data: {
         name: data.name,
@@ -64,7 +65,7 @@ export class PrismaWatchlistRepository implements WatchListRepository {
     });
   }
 
-  async update(id: string, data: Partial<WatchList>): Promise<WatchList> {
+  async update(id: string, data: WatchList): Promise<WatchList> {
     return this.prisma.watchlist.update({
       where: { id },
       data
