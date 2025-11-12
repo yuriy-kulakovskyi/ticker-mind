@@ -6,6 +6,6 @@ export class DeleteWatchlistUseCase {
   constructor(private readonly watchlistService: WatchlistService) {}
 
   async execute(id: string, userId: string) {
-    return this.watchlistService.deleteWatchlist(id, userId);
+    return this.watchlistService.delete(id, userId);
   }
 }

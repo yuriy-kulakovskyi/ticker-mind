@@ -10,8 +10,11 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
   ) {}
 
   async create(id: string, email: string, displayName?: string): Promise<Subscriber> {
-    const existing = await this.prisma.subscriber.findUnique({
-      where: { email }
+    const existing = await this.prisma.subscriber.findFirst({
+      where: { 
+        email,
+        isDeleted: false
+      }
     });
 
     if (existing) {
@@ -35,6 +38,17 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
   }
 
   async update(displayName: string, id: string): Promise<Subscriber> {
+    const existing = await this.prisma.subscriber.findFirst({
+      where: { 
+        id,
+        isDeleted: false
+      }
+    });
+
+    if (!existing) {
+      throw new NotFoundException("Subscriber not found");
+    }
+
     const subscriber = await this.prisma.subscriber.update({
       where: { id },
       data: { displayName }
@@ -49,16 +63,31 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
   }
 
   async delete(id: string): Promise<{ message: string }> {
-    await this.prisma.subscriber.delete({
-      where: { id }
+    const existing = await this.prisma.subscriber.findFirst({
+      where: { 
+        id,
+        isDeleted: false
+      }
+    });
+
+    if (!existing) {
+      throw new NotFoundException("Subscriber not found");
+    }
+
+    await this.prisma.subscriber.update({
+      where: { id },
+      data: { isDeleted: true }
     });
 
     return { message: "Subscriber deleted successfully" };
   }
 
   async findById(id: string): Promise<Partial<Subscriber>> {
-    const subscriber = await this.prisma.subscriber.findUnique({
-      where: { id }
+    const subscriber = await this.prisma.subscriber.findFirst({
+      where: { 
+        id,
+        isDeleted: false
+      }
     });
 
     if (!subscriber) {
@@ -74,8 +103,11 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
   }
 
   async getMe(id: string): Promise<Subscriber> {
-    const subscriber = await this.prisma.subscriber.findUnique({
-      where: { id },
+    const subscriber = await this.prisma.subscriber.findFirst({
+      where: { 
+        id,
+        isDeleted: false
+      },
       select: {
         id: true,
         email: true,

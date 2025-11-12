@@ -9,6 +9,6 @@ export class CreateSubscriberUseCase {
   ) {}
 
   async execute(id: string, email: string, displayName?: string): Promise<Subscriber> {
-    return this.subscriberService.createSubscriber(id, email, displayName);
+    return this.subscriberService.create(id, email, displayName);
   }
 }

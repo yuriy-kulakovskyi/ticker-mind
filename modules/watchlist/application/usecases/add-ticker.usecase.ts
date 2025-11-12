@@ -8,6 +8,6 @@ export class AddTickerUseCase {
   ) {}
 
   async execute(watchlistId: string, ticker: string, userId: string) {
-    return this.watchlistService.addTicker(watchlistId, ticker, userId);
+    return this.watchlistService.addItem(watchlistId, ticker, userId);
   }
 }

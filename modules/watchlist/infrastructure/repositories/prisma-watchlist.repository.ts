@@ -16,15 +16,32 @@ export class PrismaWatchlistRepository implements WatchListRepository {
         name: data.name,
         subscriberId: data.subscriberId
       },
-      include: { items: true }
+      include: { 
+        items: {
+          where: { isDeleted: false }
+        }
+      }
     });
   }
 
-  async addItem(watchlistId: string, ticker: string): Promise<WatchList> {
+  async addItem(watchlistId: string, ticker: string, userId: string): Promise<WatchList> {
+    const watchlist = await this.prisma.watchlist.findFirst({
+      where: {
+        id: watchlistId,
+        subscriberId: userId,
+        isDeleted: false
+      }
+    });
+
+    if (!watchlist) {
+      throw new NotFoundException('Watchlist not found');
+    }
+
     const existing = await this.prisma.watchlistItem.findFirst({
       where: {
         watchlistId,
-        ticker
+        ticker,
+        isDeleted: false
       }
     });
 
@@ -39,15 +56,32 @@ export class PrismaWatchlistRepository implements WatchListRepository {
           create: { ticker }
         }
       },
-      include: { items: true }
+      include: { 
+        items: {
+          where: { isDeleted: false }
+        }
+      }
     });
   }
 
-  async removeItem(watchlistId: string, ticker: string): Promise<WatchList | null> {
+  async removeItem(watchlistId: string, ticker: string, userId: string): Promise<WatchList> {
+    const watchlist = await this.prisma.watchlist.findFirst({
+      where: {
+        id: watchlistId,
+        subscriberId: userId,
+        isDeleted: false
+      }
+    });
+
+    if (!watchlist) {
+      throw new NotFoundException('Watchlist not found');
+    }
+
     const item = await this.prisma.watchlistItem.findFirst({
       where: {
         watchlistId,
-        ticker
+        ticker,
+        isDeleted: false
       }
     });
 
@@ -55,39 +89,99 @@ export class PrismaWatchlistRepository implements WatchListRepository {
       throw new NotFoundException('Ticker not found in watchlist');
     }
 
-    await this.prisma.watchlistItem.delete({ where: { id: item.id } });
-
-    return this.prisma.watchlist.findUnique({
-      where: { id: watchlistId },
-      include: { items: true }
+    await this.prisma.watchlistItem.update({ 
+      where: { id: item.id },
+      data: { isDeleted: true }
     });
+
+    const updatedWatchlist = await this.prisma.watchlist.findFirst({
+      where: { 
+        id: watchlistId,
+        isDeleted: false
+      },
+      include: { 
+        items: {
+          where: { isDeleted: false }
+        }
+      }
+    });
+
+    if (!updatedWatchlist) {
+      throw new NotFoundException('Watchlist not found');
+    }
+
+    return updatedWatchlist;
   }
 
   async findAllByUser(subscriberId: string): Promise<WatchList[]> {
     return this.prisma.watchlist.findMany({
-      where: { subscriberId },
-      include: { items: true }
+      where: { 
+        subscriberId,
+        isDeleted: false
+      },
+      include: { 
+        items: {
+          where: { isDeleted: false }
+        }
+      }
     });
   }
 
   async findById(id: string, subscriberId: string): Promise<WatchList | null> {
-    return this.prisma.watchlist.findUnique({
-      where: { id, subscriberId },
-      include: { items: true }
+    return this.prisma.watchlist.findFirst({
+      where: { 
+        id, 
+        subscriberId,
+        isDeleted: false
+      },
+      include: { 
+        items: {
+          where: { isDeleted: false }
+        }
+      }
     });
   }
 
-  async update(id: string, data: WatchList): Promise<WatchList> {
+  async update(id: string, data: Partial<WatchList>, userId: string): Promise<WatchList> {
+    const watchlist = await this.prisma.watchlist.findFirst({
+      where: { 
+        id,
+        subscriberId: userId,
+        isDeleted: false
+      }
+    });
+
+    if (!watchlist) {
+      throw new NotFoundException('Watchlist not found');
+    }
+
     return this.prisma.watchlist.update({
       where: { id },
       data: { name: data.name },
-      include: { items: true }
+      include: { 
+        items: {
+          where: { isDeleted: false }
+        }
+      }
     });
   }
 
-  async delete(id: string): Promise<void> {
-    await this.prisma.watchlist.delete({
-      where: { id }
+  async delete(id: string, userId: string): Promise<void> {
+    const existing = await this.prisma.watchlist.findFirst({
+      where: { 
+        id,
+        subscriberId: userId,
+        isDeleted: false
+      }
+    });
+
+    if (!existing) {
+      throw new NotFoundException('Watchlist not found');
+    }
+
+    await this.prisma.watchlist.update({
+      where: { id },
+      data: { isDeleted: true }
     });
   }
 }

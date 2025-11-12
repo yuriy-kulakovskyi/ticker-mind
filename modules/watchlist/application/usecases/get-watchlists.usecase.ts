@@ -8,6 +8,6 @@ export class GetWatchlistsUseCase {
   ) {}
 
   async execute(subscriberId: string) {
-    return this.watchlistService.getWatchlists(subscriberId);
+    return this.watchlistService.findAllByUser(subscriberId);
   }
 }

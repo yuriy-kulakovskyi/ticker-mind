@@ -8,6 +8,6 @@ export class UpdateWatchlistUseCase {
   ) {}
 
   async execute(id: string, data: { name: string }, userId: string) {
-    return this.watchlistService.updateWatchlist(id, data, userId);
+    return this.watchlistService.update(id, data, userId);
   }
 }

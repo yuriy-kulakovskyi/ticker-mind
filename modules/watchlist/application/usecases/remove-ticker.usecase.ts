@@ -8,6 +8,6 @@ export class RemoveTickerUseCase {
   ) {}
 
   async execute(watchlistId: string, ticker: string, userId: string) {
-    return this.watchlistService.removeTicker(watchlistId, ticker, userId);
+    return this.watchlistService.removeItem(watchlistId, ticker, userId);
   }
 }

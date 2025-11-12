@@ -7,32 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Notification {
-  id          String   @id @default(uuid())
-  message     String
-  createdAt   DateTime @default(now())
-  subscribers NotificationSubscriber[]
-}
-
 model Subscriber {
   id            String                  @id @default(uuid())
   email         String                  @unique
   displayName   String?
   createdAt     DateTime                @default(now())
   watchlists    Watchlist[]
-  notifications NotificationSubscriber[]
+  isDeleted     Boolean                 @default(false)
+  notifications Notification[]
 }
 
-model NotificationSubscriber {
+model Notification {
   id             String       @id @default(uuid())
-  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
-  notificationId String
+  title          String
+  tickers        String[]
+  message        String
   subscriber     Subscriber   @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
   subscriberId   String
-  isRead         Boolean      @default(false)
+  isDeleted      Boolean      @default(false)
   createdAt      DateTime     @default(now())
-
-  @@unique([notificationId, subscriberId])
 }
 
 model Watchlist {
@@ -41,6 +34,7 @@ model Watchlist {
   subscriber   Subscriber      @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
   subscriberId String
   items        WatchlistItem[]
+  isDeleted    Boolean         @default(false)
   createdAt    DateTime        @default(now())
 }
 
@@ -49,6 +43,7 @@ model WatchlistItem {
   watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
   watchlistId String
   ticker      String
+  isDeleted   Boolean  @default(false)
   createdAt   DateTime @default(now())
 }
 
@@ -57,6 +52,7 @@ model Report {
   title         String
   summary       String
   ticker        String
+  isDeleted     Boolean           @default(false)
   createdAt     DateTime          @default(now())
 }
 

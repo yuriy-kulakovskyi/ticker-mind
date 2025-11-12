@@ -9,6 +9,6 @@ export class GetWatchlistByIdUseCase {
 
   
   async execute(id: string, subscriberId: string) {
-    return this.watchlistService.getWatchlistById(id, subscriberId);
+    return this.watchlistService.findById(id, subscriberId);
   }
 }

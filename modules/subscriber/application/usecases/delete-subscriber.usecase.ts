@@ -8,6 +8,6 @@ export class DeleteSubscriberUseCase {
   ) {}
 
   async execute(id: string): Promise<{ message: string }> {
-    return this.subscriberService.deleteSubscriber(id);
+    return this.subscriberService.delete(id);
   }
 }

@@ -9,6 +9,6 @@ export class UpdateSubscriberUseCase {
   ) {}
 
   async execute(id: string, displayName: string): Promise<Subscriber> {
-    return this.subscriberService.updateSubscriber(id, displayName);
+    return this.subscriberService.update(id, displayName);
   }
 }

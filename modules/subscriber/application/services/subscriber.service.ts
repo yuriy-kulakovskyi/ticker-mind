@@ -3,25 +3,25 @@ import { Subscriber } from "@subscriber/domain/entities/subscriber.entity";
 import { SubscriberRepository } from "@subscriber/infrastructure/repositories/subscriber.repository";
 
 @Injectable()
-export class SubscriberService {
+export class SubscriberService implements SubscriberRepository {
   constructor(
   @Inject('SubscriberRepository')
     private readonly subscriberRepository: SubscriberRepository
   ) {}
 
-  async createSubscriber(id: string, email: string, displayName?: string): Promise<Subscriber> {
+  async create(id: string, email: string, displayName?: string): Promise<Subscriber> {
     return this.subscriberRepository.create(id, email, displayName);
   }
 
-  async updateSubscriber(id: string, displayName: string): Promise<Subscriber> {
+  async update(id: string, displayName: string): Promise<Subscriber> {
     return this.subscriberRepository.update(displayName, id);
   }
 
-  async deleteSubscriber(id: string): Promise<{ message: string }> {
+  async delete(id: string): Promise<{ message: string }> {
     return this.subscriberRepository.delete(id);
   }
 
-  async getSubscriberById(id: string): Promise<Partial<Subscriber>> {
+  async findById(id: string): Promise<Partial<Subscriber>> {
     return this.subscriberRepository.findById(id);
   }
 

@@ -9,6 +9,6 @@ export class ReadSubscriberUseCase {
   ) {}
 
   async execute(id: string): Promise<Partial<Subscriber>> {
-    return this.subscriberService.getSubscriberById(id);
+    return this.subscriberService.findById(id);
   }
 }
