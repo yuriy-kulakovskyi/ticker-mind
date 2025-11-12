@@ -1,7 +1,7 @@
 import { Injectable, Inject, Logger } from "@nestjs/common";
-import { IMarketDataProvider } from "modules/market/domain/interfaces/market-data-provider.interface";
-import { IMarketStorage } from "modules/market/domain/interfaces/market-storage.interface";
-import { Market } from "modules/market/domain/entities/market.entity";
+import { IMarketDataProvider } from "@market/domain/interfaces/market-data-provider.interface";
+import { IMarketStorage } from "@market/domain/interfaces/market-storage.interface";
+import { Market } from "@market/domain/entities/market.entity";
 
 @Injectable()
 export class MarketService {

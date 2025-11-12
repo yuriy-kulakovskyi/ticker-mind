@@ -1,6 +1,6 @@
-import { Inject, Injectable, NotFoundException, ForbiddenException } from "@nestjs/common";
-import { SubscriberService } from "modules/subscriber/application/services/subscriber.service";
-import { WatchListRepository } from "modules/watchlist/infrastructure/repositories/watchlist.repository";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { SubscriberService } from "@subscriber/application/services/subscriber.service";
+import { WatchListRepository } from "@watchlist/infrastructure/repositories/watchlist.repository";
 
 @Injectable()
 export class WatchlistService {

@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { WatchlistService } from "../services/watchlist.service";
+import { WatchlistService } from "@watchlist/application/services/watchlist.service";
 
 @Injectable()
 export class GetWatchlistsUseCase {

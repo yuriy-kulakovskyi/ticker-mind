@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { SubscriberRepository } from "./subscriber.repository";
-import { PrismaService } from "prisma/prisma.service";
-import { Subscriber } from "modules/subscriber/domain/entities/subscriber.entity";
+import { SubscriberRepository } from "@subscriber/infrastructure/repositories/subscriber.repository";
+import { PrismaService } from "@prisma/prisma.service";
+import { Subscriber } from "@subscriber/domain/entities/subscriber.entity";
 
 @Injectable()
 export class PrismaSubscriberRepository implements SubscriberRepository {

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { MarketService } from "../services/market.service";
-import { Market } from "modules/market/domain/entities/market.entity";
+import { MarketService } from "@market/application/services/market.service";
+import { Market } from "@market/domain/entities/market.entity";
 
 
 @Injectable()

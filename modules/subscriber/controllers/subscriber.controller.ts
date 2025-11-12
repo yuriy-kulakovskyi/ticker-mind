@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Request, UseGuards } from "@nestjs/common";
-import { UpdateSubscriberUseCase } from "../application/usecases/update-subscriber.usecase";
-import { CreateSubscriberUseCase } from "../application/usecases/create-subscriber.usecase";
-import { DeleteSubscriberUseCase } from "../application/usecases/delete-subscriber.usecase";
-import { ReadSubscriberUseCase } from "../application/usecases/read-subscriber.usecase";
-import { CreateSubscriberDto } from "shared/dto/subscriber/create-subscriber.dto";
-import { UpdateSubscriberDto } from "shared/dto/subscriber/update-subscriber.dto";
-import { AuthGuard } from "presentation/guards/auth.guard";
-import { GetMeUseCase } from "../application/usecases/get-me.usecase";
+import { UpdateSubscriberUseCase } from "@subscriber/application/usecases/update-subscriber.usecase";
+import { CreateSubscriberUseCase } from "@subscriber/application/usecases/create-subscriber.usecase";
+import { DeleteSubscriberUseCase } from "@subscriber/application/usecases/delete-subscriber.usecase";
+import { ReadSubscriberUseCase } from "@subscriber/application/usecases/read-subscriber.usecase";
+import { CreateSubscriberDto } from "@shared/dto/subscriber/create-subscriber.dto";
+import { UpdateSubscriberDto } from "@shared/dto/subscriber/update-subscriber.dto";
+import { AuthGuard } from "@presentation/guards/auth.guard";
+import { GetMeUseCase } from "@subscriber/application/usecases/get-me.usecase";
 
 @Controller("subscriber")
 export class SubscriberController {

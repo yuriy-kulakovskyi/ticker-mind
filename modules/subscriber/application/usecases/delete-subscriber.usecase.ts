@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { SubscriberService } from "../services/subscriber.service";
+import { SubscriberService } from "@subscriber/application/services/subscriber.service";
 
 @Injectable()
 export class DeleteSubscriberUseCase {

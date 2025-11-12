@@ -1,4 +1,4 @@
-import { Subscriber } from "modules/subscriber/domain/entities/subscriber.entity";
+import { Subscriber } from "@subscriber/domain/entities/subscriber.entity";
 
 export interface SubscriberRepository {
   create(id: string, email: string, displayName?: string): Promise<Subscriber>;

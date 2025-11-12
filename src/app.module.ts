@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 
-import { MarketModule } from 'modules/market/market.module';
-import { NotificationModule } from 'modules/notification/notification.module';
-import { ReportModule } from 'modules/report/report.module';
-import { SsrModule } from 'modules/ssr/ssr.module';
-import { SubscriberModule } from 'modules/subscriber/subscriber.module';
-import { WatchlistModule } from 'modules/watchlist/watchlist.module';
-import { PrismaService } from '../prisma/prisma.service';
+import { MarketModule } from '@market/market.module';
+import { NotificationModule } from '@notification/notification.module';
+import { ReportModule } from '@report/report.module';
+import { SsrModule } from '@ssr/ssr.module';
+import { SubscriberModule } from '@subscriber/subscriber.module';
+import { WatchlistModule } from '@watchlist/watchlist.module';
+import { PrismaService } from '@prisma/prisma.service';
 import { HttpModule } from '@nestjs/axios';
-import { AuthGuard } from 'presentation/guards/auth.guard';
+import { AuthGuard } from '@presentation/guards/auth.guard';
 import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({

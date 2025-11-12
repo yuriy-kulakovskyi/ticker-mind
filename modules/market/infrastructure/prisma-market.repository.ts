@@ -1,13 +1,13 @@
-import { PrismaService } from "prisma/prisma.service";
-import { Market } from "../domain/entities/market.entity";
+import { PrismaService } from "@prisma/prisma.service";
+import { Market } from "@market/domain/entities/market.entity";
 import { Injectable, NotFoundException, Logger } from "@nestjs/common";
-import { MarketCandle } from "../domain/entities/market-candle.entity";
-import { IMarketStorage } from "../domain/interfaces/market-storage.interface";
+import { MarketCandle } from "@market/domain/entities/market-candle.entity";
+import { IMarketStorage } from "@market/domain/interfaces/market-storage.interface";
 
 
 @Injectable()
-export class MarketPrismaRepository implements IMarketStorage {
-  private readonly logger = new Logger(MarketPrismaRepository.name);
+export class PrismaMarketRepository implements IMarketStorage {
+  private readonly logger = new Logger(PrismaMarketRepository.name);
 
   constructor(private readonly prisma: PrismaService) {}
 

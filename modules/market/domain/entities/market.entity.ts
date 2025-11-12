@@ -1,5 +1,5 @@
-import { MarketRepository } from "modules/market/infrastructure/market.repository";
-import { MarketCandle } from "./market-candle.entity";
+import { MarketRepository } from "@market/infrastructure/market.repository";
+import { MarketCandle } from "@market/domain/entities/market-candle.entity";
 
 export class Market {
   constructor(

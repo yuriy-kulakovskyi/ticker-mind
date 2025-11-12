@@ -1,16 +1,16 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "presentation/guards/auth.guard";
-import { AddTickerDto } from "shared/dto/watchlist/add-ticker.dto";
-import { CreateWatchlistDto } from "shared/dto/watchlist/create-watchlist.dto";
-import { RemoveTickerDto } from "shared/dto/watchlist/remove-ticker.dto";
-import { UpdateWatchlistDto } from "shared/dto/watchlist/update-watchlist.dto";
-import { DeleteWatchlistUseCase } from "../application/usecases/delete-watchlist.usecase";
-import { CreateWatchlistUseCase } from "../application/usecases/create-watchlist.usecase";
-import { AddTickerUseCase } from "../application/usecases/add-ticker.usecase";
-import { RemoveTickerUseCase } from "../application/usecases/remove-ticker.usecase";
-import { GetWatchlistsUseCase } from "../application/usecases/get-watchlists.usecase";
-import { GetWatchlistByIdUseCase } from "../application/usecases/get-watchlist-by-id.usecase";
-import { UpdateWatchlistUseCase } from "../application/usecases/update-watchlist.usecase";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@presentation/guards/auth.guard";
+import { AddTickerDto } from "@shared/dto/watchlist/add-ticker.dto";
+import { CreateWatchlistDto } from "@shared/dto/watchlist/create-watchlist.dto";
+import { RemoveTickerDto } from "@shared/dto/watchlist/remove-ticker.dto";
+import { UpdateWatchlistDto } from "@shared/dto/watchlist/update-watchlist.dto";
+import { DeleteWatchlistUseCase } from "@watchlist/application/usecases/delete-watchlist.usecase";
+import { CreateWatchlistUseCase } from "@watchlist/application/usecases/create-watchlist.usecase";
+import { AddTickerUseCase } from "@watchlist/application/usecases/add-ticker.usecase";
+import { RemoveTickerUseCase } from "@watchlist/application/usecases/remove-ticker.usecase";
+import { GetWatchlistsUseCase } from "@watchlist/application/usecases/get-watchlists.usecase";
+import { GetWatchlistByIdUseCase } from "@watchlist/application/usecases/get-watchlist-by-id.usecase";
+import { UpdateWatchlistUseCase } from "@watchlist/application/usecases/update-watchlist.usecase";
 
 @Controller('watchlist')
 @UseGuards(AuthGuard)

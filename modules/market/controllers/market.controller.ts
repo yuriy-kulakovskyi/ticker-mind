@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus, Post, Query } from "@nestjs/common";
-import { GetMarketDataQueryDto } from "shared/dto/market/get-market-data.dto";
-import { SyncMarketDataUseCase } from "../application/usecases/sync-market-data.usecase";
-import { GetMarketDataUseCase } from "../application/usecases/get-market-data.usecase";
+import { GetMarketDataQueryDto } from "@shared/dto/market/get-market-data.dto";
+import { SyncMarketDataUseCase } from "@market/application/usecases/sync-market-data.usecase";
+import { GetMarketDataUseCase } from "@market/application/usecases/get-market-data.usecase";
 
 
 @Controller("market")

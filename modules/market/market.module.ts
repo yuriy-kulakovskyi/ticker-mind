@@ -1,13 +1,13 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { HttpModule } from "@nestjs/axios";
-import { MarketController } from "./controllers/market.controller";
-import { MarketService } from "./application/services/market.service";
-import { AlphaVantageApiClient } from "./infrastructure/api-client.repository";
-import { MarketPrismaRepository } from "./infrastructure/market-prisma.repository";
-import { SyncMarketDataUseCase } from "./application/usecases/sync-market-data.usecase";
-import { GetMarketDataUseCase } from "./application/usecases/get-market-data.usecase";
-import { PrismaService } from "prisma/prisma.service";
+import { MarketController } from "@market/controllers/market.controller";
+import { MarketService } from "@market/application/services/market.service";
+import { AlphaVantageApiClient } from "@market/infrastructure/api-client.repository";
+import { PrismaMarketRepository } from "@market/infrastructure/prisma-market.repository";
+import { SyncMarketDataUseCase } from "@market/application/usecases/sync-market-data.usecase";
+import { GetMarketDataUseCase } from "@market/application/usecases/get-market-data.usecase";
+import { PrismaService } from "@prisma/prisma.service";
 
 
 @Module({
@@ -26,11 +26,11 @@ import { PrismaService } from "prisma/prisma.service";
     },
     {
       provide: 'IMarketStorage',
-      useClass: MarketPrismaRepository,
+      useClass: PrismaMarketRepository,
     },
     
     AlphaVantageApiClient,
-    MarketPrismaRepository,
+    PrismaMarketRepository,
     
     PrismaService,
   ],

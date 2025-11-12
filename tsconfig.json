@@ -10,6 +10,17 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@subscriber/*": ["modules/subscriber/*"],
+      "@notification/*": ["modules/notification/*"],
+      "@market/*": ["modules/market/*"],
+      "@watchlist/*": ["modules/watchlist/*"],
+      "@report/*": ["modules/report/*"],
+      "@ssr/*": ["modules/ssr/*"],
+      "@shared/*": ["shared/*"],
+      "@presentation/*": ["presentation/*"],
+      "@prisma/*": ["prisma/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,

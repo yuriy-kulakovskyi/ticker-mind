@@ -1,10 +1,10 @@
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { MarketRepository } from "./market.repository";
+import { MarketRepository } from "@market/infrastructure/market.repository";
 import { firstValueFrom } from "rxjs";
 import { Injectable, HttpException, HttpStatus, Logger } from "@nestjs/common";
-import { Market } from "../domain/entities/market.entity";
-import { IMarketDataProvider } from "../domain/interfaces/market-data-provider.interface";
+import { Market } from "@market/domain/entities/market.entity";
+import { IMarketDataProvider } from "@market/domain/interfaces/market-data-provider.interface";
 
 
 @Injectable()

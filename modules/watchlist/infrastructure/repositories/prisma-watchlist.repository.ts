@@ -1,8 +1,8 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { WatchListRepository } from "./watchlist.repository";
-import { PrismaService } from "prisma/prisma.service";
-import { WatchList } from "modules/watchlist/domain/entities/watchlist.entity";
-import { ICreateWatchlist } from "modules/watchlist/domain/interfaces/create-watchlist.interface";
+import { WatchListRepository } from "@watchlist/infrastructure/repositories/watchlist.repository";
+import { PrismaService } from "@prisma/prisma.service";
+import { WatchList } from "@watchlist/domain/entities/watchlist.entity";
+import { ICreateWatchlist } from "@watchlist/domain/interfaces/create-watchlist.interface";
 
 @Injectable()
 export class PrismaWatchlistRepository implements WatchListRepository {

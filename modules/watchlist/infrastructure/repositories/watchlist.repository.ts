@@ -1,5 +1,5 @@
-import { WatchList } from "modules/watchlist/domain/entities/watchlist.entity";
-import { ICreateWatchlist } from "modules/watchlist/domain/interfaces/create-watchlist.interface";
+import { WatchList } from "@watchlist/domain/entities/watchlist.entity";
+import { ICreateWatchlist } from "@watchlist/domain/interfaces/create-watchlist.interface";
 
 export interface WatchListRepository {
   create(data: ICreateWatchlist): Promise<WatchList>;
