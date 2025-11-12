@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { NotificationService } from "../services/notification.service";
+import { NotificationService } from "@notification/application/services/notification.service";
 import { INotification } from "@notification/domain/interfaces/notification.interface";
 import { NotificationEntity } from "@notification/domain/entities/notification.entity";
 

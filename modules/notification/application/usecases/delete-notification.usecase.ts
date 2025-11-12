@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { NotificationService } from "../services/notification.service";
+import { NotificationService } from "@notification/application/services/notification.service";
 
 @Injectable()
 export class DeleteNotificationUseCase {
