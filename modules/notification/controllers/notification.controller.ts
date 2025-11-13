@@ -7,6 +7,7 @@ import { UpdateNotificationUseCase } from "@notification/application/usecases/up
 import { AuthGuard } from "@presentation/guards/auth.guard";
 import { CreateNotificationDto } from "@shared/dto/notification/create-notification.dto";
 import { UpdateNotificationDto } from "@shared/dto/notification/update-notification.dto";
+import { IUserResponse } from "@shared/interfaces/user.interface";
 
 @Controller("notification")
 @UseGuards(AuthGuard)
@@ -21,31 +22,31 @@ export class NotificationController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async createNotification(@Body() data: CreateNotificationDto, @Request() req) {
+  async createNotification(@Body() data: CreateNotificationDto, @Request() req: IUserResponse) {
     return this.createNotificationUseCase.execute(data, req.user.user_id);
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  async updateNotification(@Param('id') id: string, @Body() data: UpdateNotificationDto, @Request() req) {
+  async updateNotification(@Param('id') id: string, @Body() data: UpdateNotificationDto, @Request() req: IUserResponse) {
     return this.updateNotificationUseCase.execute({ id, ...data, userId: req.user.user_id });
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getNotifications(@Request() req) {
+  async getNotifications(@Request() req: IUserResponse) {
     return this.getNotificationsUseCase.execute(req.user.user_id);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async deleteNotification(@Param('id') id: string, @Request() req) {
+  async deleteNotification(@Param('id') id: string, @Request() req: IUserResponse) {
     return this.deleteNotificationUseCase.execute(req.user.user_id, id);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async getNotification(@Param('id') id: string, @Request() req) {
+  async getNotification(@Param('id') id: string, @Request() req: IUserResponse) {
     return this.getNotificationByIdUseCase.execute(req.user.user_id, id);
   }
 }

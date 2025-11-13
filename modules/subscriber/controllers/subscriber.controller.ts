@@ -7,6 +7,7 @@ import { CreateSubscriberDto } from "@shared/dto/subscriber/create-subscriber.dt
 import { UpdateSubscriberDto } from "@shared/dto/subscriber/update-subscriber.dto";
 import { AuthGuard } from "@presentation/guards/auth.guard";
 import { GetMeUseCase } from "@subscriber/application/usecases/get-me.usecase";
+import { IUserResponse } from "@shared/interfaces/user.interface";
 
 @Controller("subscriber")
 export class SubscriberController {
@@ -21,7 +22,7 @@ export class SubscriberController {
   @Get("/me")
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  async getMySubscriber(@Request() req) {
+  async getMySubscriber(@Request() req: IUserResponse) {
     return this.getMeUseCase.execute(req.user.user_id);
   }
 
@@ -34,21 +35,21 @@ export class SubscriberController {
   @Post()
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async createSubscriber(@Body() createSubscriberDto: CreateSubscriberDto, @Request() req) {
+  async createSubscriber(@Body() createSubscriberDto: CreateSubscriberDto, @Request() req: IUserResponse) {
     return this.createSubscriberUseCase.execute(req.user.user_id, req.user.email, createSubscriberDto.displayName);
   }
 
   @Patch()
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  async updateSubscriber(@Body() updateSubscriberDto: UpdateSubscriberDto, @Request() req) {
+  async updateSubscriber(@Body() updateSubscriberDto: UpdateSubscriberDto, @Request() req: IUserResponse) {
     return this.updateSubscriberUseCase.execute(req.user.user_id, updateSubscriberDto.displayName);
   }
 
   @Delete()
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  async deleteSubscriber(@Request() req) {
+  async deleteSubscriber(@Request() req: IUserResponse) {
     return this.deleteSubscriberUseCase.execute(req.user.user_id);
   }
 }

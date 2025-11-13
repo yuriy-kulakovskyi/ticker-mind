@@ -11,6 +11,7 @@ import { RemoveTickerUseCase } from "@watchlist/application/usecases/remove-tick
 import { GetWatchlistsUseCase } from "@watchlist/application/usecases/get-watchlists.usecase";
 import { GetWatchlistByIdUseCase } from "@watchlist/application/usecases/get-watchlist-by-id.usecase";
 import { UpdateWatchlistUseCase } from "@watchlist/application/usecases/update-watchlist.usecase";
+import { IUserResponse } from "@shared/interfaces/user.interface";
 
 @Controller('watchlist')
 @UseGuards(AuthGuard)
@@ -27,43 +28,43 @@ export class WatchlistController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() dto: CreateWatchlistDto, @Request() req) {
+  async create(@Body() dto: CreateWatchlistDto, @Request() req: IUserResponse) {
     return this.createWatchlistUseCase.execute(dto.name, req.user.user_id, req.user.email);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(@Request() req) {
+  async findAll(@Request() req: IUserResponse) {
     return this.getWatchlistsUseCase.execute(req.user.user_id);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async findOne(@Param('id') id: string, @Request() req) {
+  async findOne(@Param('id') id: string, @Request() req: IUserResponse) {
     return this.getWatchlistByIdUseCase.execute(id, req.user.user_id);
   }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  async update(@Param('id') id: string, @Body() dto: UpdateWatchlistDto, @Request() req) {
+  async update(@Param('id') id: string, @Body() dto: UpdateWatchlistDto, @Request() req: IUserResponse) {
     return this.updateWatchlistUseCase.execute(id, dto, req.user.user_id);
   }
 
   @Post(':id/tickers')
   @HttpCode(HttpStatus.OK)
-  async addTicker(@Param('id') id: string, @Body() dto: AddTickerDto, @Request() req) {
+  async addTicker(@Param('id') id: string, @Body() dto: AddTickerDto, @Request() req: IUserResponse) {
     return this.addTickerUseCase.execute(id, dto.ticker, req.user.user_id);
   }
 
   @Delete(':id/tickers')
   @HttpCode(HttpStatus.OK)
-  async removeTicker(@Param('id') id: string, @Body() dto: RemoveTickerDto, @Request() req) {
+  async removeTicker(@Param('id') id: string, @Body() dto: RemoveTickerDto, @Request() req: IUserResponse) {
     return this.removeTickerUseCase.execute(id, dto.ticker, req.user.user_id);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async remove(@Param('id') id: string, @Request() req) {
+  async remove(@Param('id') id: string, @Request() req: IUserResponse) {
     return this.deleteWatchlistUseCase.execute(id, req.user.user_id);
   }
 }

@@ -8,6 +8,7 @@ import {
 } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from "rxjs";
+import { IUserResponse } from "@shared/interfaces/user.interface";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -21,7 +22,7 @@ export class AuthGuard implements CanActivate {
 
     try {
       const { data } = await firstValueFrom(
-        this.httpService.post(process.env.VERIFY_TOKEN_URL || "", {
+        this.httpService.post<IUserResponse>(process.env.VERIFY_TOKEN_URL || "", {
           token,
           api_key: process.env.ALTERNATIVE_AUTH_API_KEY,
         })
