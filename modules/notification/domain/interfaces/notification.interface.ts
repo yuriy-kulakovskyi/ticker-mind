@@ -1,5 +1,6 @@
 export interface INotification {
   title: string;
-  tickers: string[];
+  tickers?: string[];
+  watchlistId?: string;
   message: string;
 }

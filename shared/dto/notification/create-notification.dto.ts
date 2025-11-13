@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateNotificationDto {
   @IsString()
@@ -7,7 +7,13 @@ export class CreateNotificationDto {
 
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
-  tickers: string[];
+  @IsOptional()
+  tickers?: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  watchlistId?: string;
 
   @IsString()
   @IsNotEmpty()

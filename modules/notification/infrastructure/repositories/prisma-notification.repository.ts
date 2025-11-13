@@ -3,6 +3,7 @@ import { NotificationEntity } from "@notification/domain/entities/notification.e
 import { INotification } from "@notification/domain/interfaces/notification.interface";
 import { IUpdateNotification } from "@notification/domain/interfaces/update-notification.interface";
 import { PrismaService } from "@prisma/prisma.service";
+import { isArray } from "class-validator";
 
 @Injectable()
 export class PrismaNotificationRepository {
@@ -11,6 +12,45 @@ export class PrismaNotificationRepository {
   ) {}
 
   async createNotification(data: INotification, userId: string): Promise<NotificationEntity> {
+    if (!data.tickers && !data.watchlistId) {
+      throw new BadRequestException('Either tickers or watchlistId must be provided.');
+    }
+
+    if (data.watchlistId) {
+      const watchlist = await this.prismaService.watchlist.findFirst({
+        where: {
+          id: data.watchlistId,
+          subscriberId: userId,
+          isDeleted: false
+        },
+        include: {
+          items: true
+        }
+      });
+
+      if (!watchlist || !isArray(watchlist.items)) {
+        throw new BadRequestException('Invalid watchlistId provided.');
+      }
+
+      const notification = await this.prismaService.notification.create({
+        data: {
+          title: data.title,
+          tickers: watchlist.items.filter(item => !item.isDeleted).map(item => item.ticker),
+          message: data.message,
+          subscriberId: userId,
+        },
+      });
+
+      return new NotificationEntity(
+        notification.id,
+        notification.title,
+        notification.tickers,
+        notification.message,
+        notification.subscriberId,
+        notification.createdAt,
+      );
+    }
+
     const notification = await this.prismaService.notification.create({
       data: {
         title: data.title,

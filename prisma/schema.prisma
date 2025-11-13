@@ -24,6 +24,7 @@ model Notification {
   message        String
   subscriber     Subscriber   @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
   subscriberId   String
+  watchlistId    String?
   isDeleted      Boolean      @default(false)
   createdAt      DateTime     @default(now())
 }
