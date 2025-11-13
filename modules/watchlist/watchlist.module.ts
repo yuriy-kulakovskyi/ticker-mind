@@ -18,6 +18,7 @@ import { SubscriberModule } from "@subscriber/subscriber.module";
   controllers: [WatchlistController],
   providers: [
     WatchlistService,
+    PrismaWatchlistRepository,
     {
       provide: 'WatchListRepository',
       useClass: PrismaWatchlistRepository,
@@ -31,6 +32,7 @@ import { SubscriberModule } from "@subscriber/subscriber.module";
     RemoveTickerUseCase,
     DeleteWatchlistUseCase,
   ],
+  exports: [PrismaWatchlistRepository],
 })
 
 export class WatchlistModule {}

@@ -15,6 +15,7 @@ model Subscriber {
   watchlists    Watchlist[]
   isDeleted     Boolean                 @default(false)
   notifications Notification[]
+  reports       Report[]
 }
 
 model Notification {
@@ -49,12 +50,15 @@ model WatchlistItem {
 }
 
 model Report {
-  id            String            @id @default(uuid())
-  title         String
-  summary       String
-  ticker        String
-  isDeleted     Boolean           @default(false)
-  createdAt     DateTime          @default(now())
+  id           String      @id @default(uuid())
+  title        String
+  summary      String
+  tickers      String[]    
+  watchlistId  String?
+  subscriber   Subscriber  @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  subscriberId String
+  isDeleted    Boolean     @default(false)
+  createdAt    DateTime    @default(now())
 }
 
 model Market {

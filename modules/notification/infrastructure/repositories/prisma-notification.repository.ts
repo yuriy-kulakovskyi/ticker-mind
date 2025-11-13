@@ -24,7 +24,7 @@ export class PrismaNotificationRepository {
           isDeleted: false
         },
         include: {
-          items: true
+          items: { where: { isDeleted: false } }
         }
       });
 
