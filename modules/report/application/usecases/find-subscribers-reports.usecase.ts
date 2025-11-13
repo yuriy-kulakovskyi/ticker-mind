@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ReportService } from "../services/report.service";
+import { ReportService } from "@report/application/services/report.service";
 
 @Injectable()
 export class FindSubscribersReportsUseCase {

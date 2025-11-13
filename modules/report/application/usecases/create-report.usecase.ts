@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ReportService } from "../services/report.service";
+import { ReportService } from "@report/application/services/report.service";
 import { ICreateReport } from "@report/domain/interfaces/create-report.interface";
 
 @Injectable()

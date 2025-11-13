@@ -1,4 +1,4 @@
-import { Market } from "../entities/market.entity";
+import { Market } from "@market/domain/entities/market.entity";
 
 export interface IMarketStorage {
   /**
