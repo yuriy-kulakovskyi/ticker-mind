@@ -7,8 +7,8 @@ import { PrismaService } from '@prisma/prisma.service';
 describe('SubscriberController (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
-  const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMDdiODEwZmQtMGQ3Zi00YjFhLWE1YzEtYjAxODE5NGY5NjM0IiwiZW1haWwiOiJ5dXJpaS5rdWxha292c2t5aS5yaS4yMDI0QGxwbnUudWEiLCJpYXQiOjE3NjMwNTIwOTUsImV4cCI6MTc2MzEzODQ5NX0.f68vitvMr96WN-8xMaHxMZOq4WPUmoGFsf0LTJJ7738';
-  const testUserId = '07b810fd-0d7f-4b1a-a5c1-b018194f9634';
+  const authToken = 'YOUR_AUTH_TOKEN';
+  const testUserId = 'YOUR_USER_ID';
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
