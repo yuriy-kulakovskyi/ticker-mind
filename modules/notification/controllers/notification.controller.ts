@@ -1,3 +1,4 @@
+import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Request, UseGuards } from "@nestjs/common";
 import { CreateNotificationUseCase } from "@notification/application/usecases/create-notification.usecase";
 import { DeleteNotificationUseCase } from "@notification/application/usecases/delete-notification.usecase";
@@ -10,6 +11,8 @@ import { UpdateNotificationDto } from "@shared/dto/notification/update-notificat
 import { IUserResponse } from "@shared/interfaces/user.interface";
 
 @Controller("notification")
+@CacheKey('notification')
+@CacheTTL(300)
 @UseGuards(AuthGuard)
 export class NotificationController {
   constructor(

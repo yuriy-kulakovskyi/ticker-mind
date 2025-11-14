@@ -9,8 +9,11 @@ import { AuthGuard } from "@presentation/guards/auth.guard";
 import { GetMeUseCase } from "@subscriber/application/usecases/get-me.usecase";
 import { IUserResponse } from "@shared/interfaces/user.interface";
 import { GetAllSubscribersUseCase } from "@subscriber/application/usecases/get-all-subscribers.usecase";
+import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 
 @Controller("subscriber")
+@CacheKey('subscriber')
+@CacheTTL(300)
 export class SubscriberController {
   constructor(
     private readonly updateSubscriberUseCase: UpdateSubscriberUseCase,

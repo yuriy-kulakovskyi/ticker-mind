@@ -2,9 +2,12 @@ import { Controller, Get, HttpCode, HttpStatus, Post, Query } from "@nestjs/comm
 import { GetMarketDataQueryDto } from "@shared/dto/market/get-market-data.dto";
 import { SyncMarketDataUseCase } from "@market/application/usecases/sync-market-data.usecase";
 import { GetMarketDataUseCase } from "@market/application/usecases/get-market-data.usecase";
+import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 
 
 @Controller("market")
+@CacheKey('market')
+@CacheTTL(300)
 export class MarketController {
   constructor(
     private readonly syncMarketDataUseCase: SyncMarketDataUseCase,

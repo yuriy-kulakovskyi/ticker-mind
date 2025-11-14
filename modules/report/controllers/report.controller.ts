@@ -1,3 +1,4 @@
+import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 import { Controller, Get, UseGuards, Request, Post, Body, Patch, Delete, HttpCode, HttpStatus, Param } from "@nestjs/common";
 import { AuthGuard } from "@presentation/guards/auth.guard";
 import { CreateReportUseCase } from "@report/application/usecases/create-report.usecase";
@@ -9,6 +10,8 @@ import { CreateReportDTO } from "@shared/dto/report/create-report.dto";
 import { IUserResponse } from "@shared/interfaces/user.interface";
 
 @Controller("report")
+@CacheKey('report')
+@CacheTTL(300)
 @UseGuards(AuthGuard)
 export class ReportController {
   constructor(

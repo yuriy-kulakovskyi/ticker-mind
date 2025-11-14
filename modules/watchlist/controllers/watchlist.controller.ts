@@ -12,8 +12,11 @@ import { GetWatchlistsUseCase } from "@watchlist/application/usecases/get-watchl
 import { GetWatchlistByIdUseCase } from "@watchlist/application/usecases/get-watchlist-by-id.usecase";
 import { UpdateWatchlistUseCase } from "@watchlist/application/usecases/update-watchlist.usecase";
 import { IUserResponse } from "@shared/interfaces/user.interface";
+import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 
 @Controller('watchlist')
+@CacheKey('watchlist')
+@CacheTTL(300)
 @UseGuards(AuthGuard)
 export class WatchlistController {
   constructor(

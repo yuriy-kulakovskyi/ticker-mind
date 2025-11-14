@@ -10,15 +10,43 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
   ) {}
 
   async create(id: string, email: string, displayName?: string): Promise<Subscriber> {
-    const existing = await this.prisma.subscriber.findFirst({
+    const existingActive = await this.prisma.subscriber.findFirst({
       where: { 
         email,
         isDeleted: false
       }
     });
 
-    if (existing) {
+    if (existingActive) {
       throw new ConflictException("Subscriber with this email already exists");
+    }
+
+    const existingDeleted = await this.prisma.subscriber.findFirst({
+      where: { 
+        OR: [
+          { id, isDeleted: true },
+          { email, isDeleted: true }
+        ]
+      }
+    });
+
+    if (existingDeleted) {
+      const subscriber = await this.prisma.subscriber.update({
+        where: { id: existingDeleted.id },
+        data: {
+          id, 
+          email,
+          displayName,
+          isDeleted: false
+        }
+      });
+
+      return new Subscriber(
+        subscriber.id,
+        subscriber.email,
+        subscriber.displayName,
+        subscriber.createdAt
+      );
     }
 
     const subscriber = await this.prisma.subscriber.create({
