@@ -1,24 +1,23 @@
-import { Controller, Get, Res, Query } from '@nestjs/common';
+import { Controller, Get, Res, Req, UseGuards, Request, Query } from '@nestjs/common';
 import { Response } from 'express';
-import { SsrRenderer } from './server/ssr.renderer';
-import { FindSubscribersReportsUseCase } from '@report/application/usecases/find-subscribers-reports.usecase';
+import { SsrAuthGuard } from '@presentation/guards/ssr-auth.guard';
+import { IUserResponse } from '@shared/interfaces/user.interface';
+import { SsrService } from './ssr.service';
 
 @Controller()
 export class SsrController {
   constructor(
-    private readonly renderer: SsrRenderer,
-    private readonly getReports: FindSubscribersReportsUseCase,
+    private readonly ssrService: SsrService
   ) {}
 
-  @Get('/admin/report')
-  async marketPage(@Query("subscriberId") subscriberId: string, @Res() res: Response) {
-    const reports = await this.getReports.execute(subscriberId);
+  @Get('/admin/auth')
+  async authRedirect(@Query('token') token: string, @Res() res: Response) {
+    return this.ssrService.authRedirect(token, res);
+  }
 
-    const html = this.renderer.render({
-      reports,
-    });
-
-    res.setHeader('Content-Type', 'text/html');
-    res.send(html);
+  @Get('/admin/reports')
+  @UseGuards(SsrAuthGuard)
+  async reportsPage(@Request() req: IUserResponse, @Res() res: Response) {
+    return this.ssrService.reportsPage(req, res);
   }
 }

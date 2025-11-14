@@ -46,6 +46,23 @@ export function formatSummary(summary: string): React.ReactElement[] {
       continue;
     }
 
+    // Subheadings (starts with * and ends with *, but not **)
+    if (trimmed.match(/^\*(?!\*).+(?<!\*)\*\s*$/) && !trimmed.match(/^\*\*.+\*\*\s*$/)) {
+      const text = trimmed.replace(/^\*|\*$/g, '');
+      elements.push(
+        <h4 key={`h4-${key++}`} style={{ 
+          marginTop: '1.25rem', 
+          marginBottom: '0.5rem',
+          fontSize: '1.125rem',
+          fontWeight: '500'
+        }}>
+          {formatInlineStyles(text)}
+        </h4>
+      );
+      i++;
+      continue;
+    }
+
     // Bullet points (starts with -)
     if (trimmed.startsWith('-')) {
       const content = trimmed.substring(1).trim();

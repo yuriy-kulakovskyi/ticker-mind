@@ -93,6 +93,7 @@ describe("PrismaReportRepository", () => {
       title: "Tech Report",
       tickers: ["AAPL"],
       subscriberId: "user1",
+      subscriberEmail: "user1@example.com",
     });
 
     expect(marketService.extractMarketDataBySymbol).toHaveBeenCalledWith("AAPL");
@@ -145,6 +146,7 @@ describe("PrismaReportRepository", () => {
       title: "Watchlist Report",
       watchlistId: "watchlist1",
       subscriberId: "user1",
+      subscriberEmail: "user1@example.com",
     });
 
     expect(watchlistRepository.findById).toHaveBeenCalledWith("watchlist1", "user1");
@@ -157,6 +159,7 @@ describe("PrismaReportRepository", () => {
       repo.create({
         title: "Invalid Report",
         subscriberId: "user1",
+        subscriberEmail: "user1@example.com",
       })
     ).rejects.toThrow(BadRequestException);
   });
@@ -169,6 +172,7 @@ describe("PrismaReportRepository", () => {
         title: "Report",
         watchlistId: "invalid",
         subscriberId: "user1",
+        subscriberEmail: "user1@example.com",
       })
     ).rejects.toThrow(BadRequestException);
   });
@@ -184,6 +188,7 @@ describe("PrismaReportRepository", () => {
         title: "Report",
         watchlistId: "watchlist1",
         subscriberId: "user1",
+        subscriberEmail: "user1@example.com",
       })
     ).rejects.toThrow(BadRequestException);
   });

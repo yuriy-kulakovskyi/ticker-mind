@@ -26,7 +26,7 @@ export class NotificationController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async createNotification(@Body() data: CreateNotificationDto, @Request() req: IUserResponse) {
-    return this.createNotificationUseCase.execute(data, req.user.user_id);
+    return this.createNotificationUseCase.execute(data, req.user.user_id, req.user.email);
   }
 
   @Patch(':id')

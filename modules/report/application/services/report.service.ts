@@ -1,17 +1,22 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { ReportEntity } from "@report/domain/entities/report.entity";
 import { ICreateReport } from "@report/domain/interfaces/create-report.interface";
 import { IUpdateReport } from "@report/domain/interfaces/update-report.interface";
 import { PrismaReportRepository } from "@report/infrastructure/repositories/prisma-report.repository";
 import { ReportRepository } from "@report/infrastructure/repositories/report.repository";
+import { ensureSubscriberExists } from "@shared/utils/subscriber-helper.util";
+import { SubscriberService } from "@subscriber/application/services/subscriber.service";
 
 @Injectable()
 export class ReportService implements ReportRepository {
   constructor(
     private readonly reportRepository: PrismaReportRepository,
+    private readonly subscriberService: SubscriberService
   ) {}
 
   async create(data: ICreateReport): Promise<ReportEntity> {
+    await ensureSubscriberExists(data.subscriberId, data.subscriberEmail, this.subscriberService);
+
     return this.reportRepository.create(data);
   }
 

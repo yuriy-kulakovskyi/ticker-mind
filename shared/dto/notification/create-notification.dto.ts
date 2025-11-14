@@ -1,10 +1,11 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateNotificationDto {
   @IsString()
   @IsNotEmpty()
   title: string;
 
+  @IsArray()
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
   @IsOptional()
@@ -17,6 +18,5 @@ export class CreateNotificationDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsOptional()
   message: string;
 }

@@ -9,7 +9,7 @@ export class CreateNotificationUseCase {
     private readonly notificationService: NotificationService
   ) {}
 
-  async execute(data: INotification, userId: string): Promise<NotificationEntity> {
-    return this.notificationService.createNotification(data, userId);
+  async execute(data: INotification, userId: string, subscriberEmail: string): Promise<NotificationEntity> {
+    return this.notificationService.createNotification(data, userId, subscriberEmail);
   }
 }

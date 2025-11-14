@@ -13,9 +13,10 @@ import { PrismaService } from "@prisma/prisma.service";
 import { OpenAIService } from "@shared/openai/open-ai.service";
 import { WatchlistModule } from "@watchlist/watchlist.module";
 import { MarketModule } from "@market/market.module";
+import { SubscriberModule } from "@subscriber/subscriber.module";
 
 @Module({
-  imports: [HttpModule, PrismaModule, WatchlistModule, MarketModule],
+  imports: [HttpModule, PrismaModule, WatchlistModule, MarketModule, SubscriberModule],
   controllers: [ReportController],
   providers: [
     ReportService,
@@ -27,7 +28,8 @@ import { MarketModule } from "@market/market.module";
     PrismaReportRepository,
     PrismaService,
     OpenAIService,
-  ]
+  ],
+  exports: [FindSubscribersReportsUseCase]
 })
 
 export class ReportModule {}

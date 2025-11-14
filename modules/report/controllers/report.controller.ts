@@ -37,7 +37,8 @@ export class ReportController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Request() req: IUserResponse, @Body() createReportDto: CreateReportDTO) {
-    return this.createReportUseCase.execute({ 
+    return this.createReportUseCase.execute({
+      subscriberEmail: req.user.email,
       subscriberId: req.user.user_id,
       title: createReportDto.title,
       tickers: createReportDto.tickers,

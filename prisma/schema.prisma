@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Subscriber {
-  id            String                  @id @default(uuid())
+  id            String                  @id
   email         String                  @unique
   displayName   String?
   createdAt     DateTime                @default(now())
