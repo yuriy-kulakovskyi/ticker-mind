@@ -13,34 +13,9 @@ import { NotificationScheduler } from "./application/schedulers/notification.sch
 import { SubscriberModule } from "@subscriber/subscriber.module";
 import { GetAllSubscribersUseCase } from "@subscriber/application/usecases/get-all-subscribers.usecase";
 import { SendMailService } from "@shared/mailer/mailer.service";
-import { MailerModule } from "@nestjs-modules/mailer";
-import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
-  imports: [
-    HttpModule, 
-    PrismaModule, 
-    SubscriberModule,
-    ConfigModule,
-    MailerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        transport: {
-          host: configService.get('MAIL_HOST') || 'smtp.gmail.com',
-          port: configService.get('MAIL_PORT') || 587,
-          secure: false,
-          auth: {
-            user: configService.get('MAIL_USER'),
-            pass: configService.get('MAIL_PASSWORD'),
-          },
-        },
-        defaults: {
-          from: `"Ticker Mind" <${configService.get('MAIL_FROM') || configService.get('MAIL_USER')}>`,
-        },
-      }),
-    }),
-  ],
+  imports: [HttpModule, PrismaModule, SubscriberModule],
   controllers: [NotificationController],
   providers: [
     NotificationService,
