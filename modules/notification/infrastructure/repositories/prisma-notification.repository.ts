@@ -36,7 +36,7 @@ export class PrismaNotificationRepository {
         data: {
           title: data.title,
           tickers: watchlist.items.filter(item => !item.isDeleted).map(item => item.ticker),
-          message: "",
+          message: data.message,
           subscriberId: userId,
         },
       });
