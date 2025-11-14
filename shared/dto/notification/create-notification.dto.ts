@@ -17,5 +17,6 @@ export class CreateNotificationDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   message: string;
 }

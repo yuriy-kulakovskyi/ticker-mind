@@ -28,4 +28,8 @@ export class SubscriberService implements SubscriberRepository {
   async getMe(id: string): Promise<Subscriber> {
     return this.subscriberRepository.getMe(id);
   }
+
+  async getAll(): Promise<Subscriber[]> {
+    return this.subscriberRepository.getAll();
+  }
 }

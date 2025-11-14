@@ -57,13 +57,13 @@ export class WatchlistController {
   }
 
   @Delete(':id/tickers')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async removeTicker(@Param('id') id: string, @Body() dto: RemoveTickerDto, @Request() req: IUserResponse) {
     return this.removeTickerUseCase.execute(id, dto.ticker, req.user.user_id);
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string, @Request() req: IUserResponse) {
     return this.deleteWatchlistUseCase.execute(id, req.user.user_id);
   }

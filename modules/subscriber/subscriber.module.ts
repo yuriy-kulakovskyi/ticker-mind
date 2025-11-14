@@ -10,6 +10,7 @@ import { PrismaService } from "@prisma/prisma.service";
 import { HttpModule } from "@nestjs/axios";
 import { PrismaModule } from "@prisma/prisma.module";
 import { GetMeUseCase } from "@subscriber/application/usecases/get-me.usecase";
+import { GetAllSubscribersUseCase } from "./application/usecases/get-all-subscribers.usecase";
 
 @Module({
   imports: [HttpModule, PrismaModule],
@@ -21,6 +22,7 @@ import { GetMeUseCase } from "@subscriber/application/usecases/get-me.usecase";
     DeleteSubscriberUseCase, 
     ReadSubscriberUseCase,
     GetMeUseCase,
+    GetAllSubscribersUseCase,
     {
       provide: 'SubscriberRepository',
       useClass: PrismaSubscriberRepository,

@@ -39,7 +39,7 @@ export class NotificationController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async deleteNotification(@Param('id') id: string, @Request() req: IUserResponse) {
     return this.deleteNotificationUseCase.execute(req.user.user_id, id);
   }

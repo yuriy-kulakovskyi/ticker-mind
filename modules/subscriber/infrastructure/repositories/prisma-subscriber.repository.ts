@@ -122,4 +122,17 @@ export class PrismaSubscriberRepository implements SubscriberRepository {
 
     return subscriber;
   }
+
+  async getAll(): Promise<Subscriber[]> {
+    const subscribers = await this.prisma.subscriber.findMany({
+      where: { isDeleted: false }
+    });
+
+    return subscribers.map(subscriber => new Subscriber(
+      subscriber.id,
+      subscriber.email,
+      subscriber.displayName,
+      subscriber.createdAt
+    ));
+  }
 }

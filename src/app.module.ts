@@ -10,6 +10,7 @@ import { PrismaService } from '@prisma/prisma.service';
 import { HttpModule } from '@nestjs/axios';
 import { AuthGuard } from '@presentation/guards/auth.guard';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     ReportModule,
     HttpModule,
     CacheModule.register(),
+    ScheduleModule.forRoot(),
   ],
   providers: [PrismaService, AuthGuard]
 })

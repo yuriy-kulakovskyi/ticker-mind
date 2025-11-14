@@ -6,4 +6,5 @@ export interface SubscriberRepository {
   delete(id: string): Promise<{ message: string }>;
   findById(id: string): Promise<Partial<Subscriber>>;
   getMe(id: string): Promise<Subscriber>;
+  getAll(): Promise<Subscriber[]>;
 }

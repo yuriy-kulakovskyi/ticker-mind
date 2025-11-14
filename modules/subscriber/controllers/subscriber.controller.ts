@@ -8,6 +8,7 @@ import { UpdateSubscriberDto } from "@shared/dto/subscriber/update-subscriber.dt
 import { AuthGuard } from "@presentation/guards/auth.guard";
 import { GetMeUseCase } from "@subscriber/application/usecases/get-me.usecase";
 import { IUserResponse } from "@shared/interfaces/user.interface";
+import { GetAllSubscribersUseCase } from "@subscriber/application/usecases/get-all-subscribers.usecase";
 
 @Controller("subscriber")
 export class SubscriberController {
@@ -16,7 +17,8 @@ export class SubscriberController {
     private readonly createSubscriberUseCase: CreateSubscriberUseCase,
     private readonly deleteSubscriberUseCase: DeleteSubscriberUseCase,
     private readonly readSubscriberUseCase: ReadSubscriberUseCase,
-    private readonly getMeUseCase: GetMeUseCase
+    private readonly getMeUseCase: GetMeUseCase,
+    private readonly getAllSubscribersUseCase: GetAllSubscribersUseCase
   ) {}
 
   @Get("/me")
@@ -48,7 +50,7 @@ export class SubscriberController {
 
   @Delete()
   @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async deleteSubscriber(@Request() req: IUserResponse) {
     return this.deleteSubscriberUseCase.execute(req.user.user_id);
   }
