@@ -1,6 +1,6 @@
 import { Market } from "@market/domain/entities/market.entity";
 import { MarketService } from "@market/application/services/market.service";
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "@prisma/prisma.service";
 import { ReportEntity } from "@report/domain/entities/report.entity";
 import { ICreateReport } from "@report/domain/interfaces/create-report.interface";
@@ -19,6 +19,10 @@ export class PrismaReportRepository {
   ) {}
 
   async create(data: ICreateReport): Promise<ReportEntity> {
+    if (!data.tickers && !data.watchlistId) {
+      throw new BadRequestException('Either tickers or watchlistId must be provided.');
+    }
+
     let summary: string;
 
     if (data.watchlistId) {
@@ -108,8 +112,8 @@ export class PrismaReportRepository {
   }
 
   async findById(id: string, subscriberId: string): Promise<ReportEntity | null> {
-    const report = await this.prismaService.report.findFirst({
-      where: { id },
+    const report = await this.prismaService.report.findUnique({
+      where: { id, subscriberId, isDeleted: false },
     });
 
     if (!report) {
@@ -118,7 +122,7 @@ export class PrismaReportRepository {
 
     // Check if the report belongs to the subscriber
     if (report.subscriberId !== subscriberId) {
-      throw new BadRequestException('You do not have permission to access this report.');
+      throw new ForbiddenException('You do not have permission to access this report.');
     }
 
     return new ReportEntity(
@@ -135,7 +139,7 @@ export class PrismaReportRepository {
   async delete(id: string, subscriberId: string): Promise<string> {
     // First, check if the report exists and belongs to the subscriber
     const report = await this.prismaService.report.findUnique({
-      where: { id },
+      where: { id, subscriberId, isDeleted: false },
     });
 
     if (!report) {
@@ -156,7 +160,7 @@ export class PrismaReportRepository {
 
   async update(id: string, subscriberId: string, data: IUpdateReport): Promise<ReportEntity> {
     // First, check if the report exists and belongs to the subscriber
-    const existingReport = await this.prismaService.report.findFirst({
+    const existingReport = await this.prismaService.report.findUnique({
       where: { id, subscriberId, isDeleted: false},
     });
 

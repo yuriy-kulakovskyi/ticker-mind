@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Request, Query, Post, Body, Patch, Delete, HttpCode, HttpStatus, Param } from "@nestjs/common";
+import { Controller, Get, UseGuards, Request, Post, Body, Patch, Delete, HttpCode, HttpStatus, Param } from "@nestjs/common";
 import { AuthGuard } from "@presentation/guards/auth.guard";
 import { CreateReportUseCase } from "@report/application/usecases/create-report.usecase";
 import { DeleteReportUseCase } from "@report/application/usecases/delete-report.usecase";
