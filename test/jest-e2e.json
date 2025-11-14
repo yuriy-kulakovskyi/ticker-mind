@@ -5,5 +5,18 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/../src/$1",
+    "^@shared/(.*)$": "<rootDir>/../shared/$1",
+    "^@market/(.*)$": "<rootDir>/../modules/market/$1",
+    "^@notification/(.*)$": "<rootDir>/../modules/notification/$1",
+    "^@report/(.*)$": "<rootDir>/../modules/report/$1",
+    "^@subscriber/(.*)$": "<rootDir>/../modules/subscriber/$1",
+    "^@watchlist/(.*)$": "<rootDir>/../modules/watchlist/$1",
+    "^@ssr/(.*)$": "<rootDir>/../modules/ssr/$1",
+    "^@presentation/(.*)$": "<rootDir>/../presentation/$1",
+    "^@prisma/prisma\\.service$": "<rootDir>/../prisma/prisma.service",
+    "^@prisma/prisma\\.module$": "<rootDir>/../prisma/prisma.module"
   }
 }
