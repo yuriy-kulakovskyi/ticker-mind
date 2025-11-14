@@ -10,6 +10,8 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "jsx": "react",
+    "esModuleInterop": true,
     "paths": {
       "@subscriber/*": ["modules/subscriber/*"],
       "@notification/*": ["modules/notification/*"],
