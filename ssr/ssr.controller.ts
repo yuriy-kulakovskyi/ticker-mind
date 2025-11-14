@@ -15,7 +15,6 @@ export class SsrController {
     const reports = await this.getReports.execute(subscriberId);
 
     const html = this.renderer.render({
-      title: `Market: ${subscriberId}`,
       reports,
     });
 

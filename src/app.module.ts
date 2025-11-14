@@ -11,6 +11,8 @@ import { AuthGuard } from '@presentation/guards/auth.guard';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SsrModule } from 'ssr/ssr.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -23,8 +25,32 @@ import { SsrModule } from 'ssr/ssr.module';
     SsrModule,
     CacheModule.register(),
     ScheduleModule.forRoot(),
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 1000,
+        limit: 3,
+      },
+      {
+        name: 'medium',
+        ttl: 10000,
+        limit: 20
+      },
+      {
+        name: 'long',
+        ttl: 60000,
+        limit: 100
+      }
+    ]),
   ],
-  providers: [PrismaService, AuthGuard]
+  providers: [
+    PrismaService, 
+    AuthGuard,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ]
 })
 
 export class AppModule {}

@@ -6,7 +6,7 @@ import { ReportEntity } from '@report/domain/entities/report.entity';
 
 @Injectable()
 export class SsrRenderer {
-  render(props: { title?: string, reports: ReportEntity[];  }) {
+  render(props: { reports: ReportEntity[];  }) {
     const html = renderToString(<App reports={props.reports} />);
     return `
       <!DOCTYPE html>
@@ -14,7 +14,7 @@ export class SsrRenderer {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${props.title ?? 'Market Intelligence Reports'}</title>
+          <title>Market Intelligence Reports</title>
           <style>
             * {
               margin: 0;
