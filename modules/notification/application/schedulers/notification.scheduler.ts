@@ -25,7 +25,7 @@ export class NotificationScheduler {
   ) {}
 
   // Every day from Monday to Saturday at 10:00 AM
-  @Cron("0 48 11 * * 1-6")
+  @Cron("0 0 10 * * 1-6")
   async handleCron() {
     this.logger.log('Starting notification scheduler...');
     
