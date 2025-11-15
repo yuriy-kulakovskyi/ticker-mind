@@ -8,7 +8,6 @@ import { UpdateSubscriberDto } from "@shared/dto/subscriber/update-subscriber.dt
 import { AuthGuard } from "@presentation/guards/auth.guard";
 import { GetMeUseCase } from "@subscriber/application/usecases/get-me.usecase";
 import { IUserResponse } from "@shared/interfaces/user.interface";
-import { GetAllSubscribersUseCase } from "@subscriber/application/usecases/get-all-subscribers.usecase";
 import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 
 @Controller("subscriber")
@@ -21,7 +20,6 @@ export class SubscriberController {
     private readonly deleteSubscriberUseCase: DeleteSubscriberUseCase,
     private readonly readSubscriberUseCase: ReadSubscriberUseCase,
     private readonly getMeUseCase: GetMeUseCase,
-    private readonly getAllSubscribersUseCase: GetAllSubscribersUseCase
   ) {}
 
   @Get("/me")

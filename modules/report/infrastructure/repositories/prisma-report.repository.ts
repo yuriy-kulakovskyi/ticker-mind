@@ -66,7 +66,7 @@ export class PrismaReportRepository {
 
     const tickers = data.tickers || [];
     const marketDataPromises = tickers.map(ticker => 
-      this.marketService.extractMarketDataBySymbol(ticker)
+      this.marketService.fetchMarketData(ticker)
     );
     const marketDataArray = await Promise.all(marketDataPromises);
 

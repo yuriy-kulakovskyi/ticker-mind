@@ -10,9 +10,9 @@ export class SendMailService {
 
   sendMail(data: IMailOptions) {
     const payload = {
-      from: {
-        email: "hello@demomailtrap.co",
+      sender: {
         name: "Ticker Mind",
+        email: process.env.BREVO_SENDER_EMAIL || "noreply@example.com",
       },
       to: [
         {
@@ -20,18 +20,17 @@ export class SendMailService {
         },
       ],
       subject: data.subject,
-      text: data.text,
-      html: data.html,
-      category: "TickerMind Notifications",
+      htmlContent: data.html || data.text,
     };
 
     return this.httpService.post(
-      "https://send.api.mailtrap.io/api/send",
+      process.env.BREVO_API_URL || "",
       payload,
       {
         headers: {
-          Authorization: `Bearer ${process.env.MAILTRAP_TOKEN}`,
-          "Content-Type": "application/json",
+          "api-key": process.env.BREVO_API_KEY,
+          "accept": "application/json",
+          "content-type": "application/json",
         },
       },
     ).subscribe();

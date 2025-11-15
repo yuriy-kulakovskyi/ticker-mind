@@ -50,7 +50,7 @@ export class NotificationScheduler {
 
   private async processSubscriberNotifications(subscriber: Subscriber): Promise<void> {
     const notifications = await this.getNotificationsUseCase.execute(subscriber.id);
-
+    
     for (const notification of notifications) {
       try {
         await this.processNotification(notification, subscriber);
@@ -85,17 +85,29 @@ export class NotificationScheduler {
     const tickersQuery = this.buildTickersQuery(notification.tickers);
     const apiUrl = this.buildApiUrl(tickersQuery);
     
+    this.logger.log(`Fetching news with query: "${tickersQuery}"`);
+    this.logger.log(`API URL: ${apiUrl.replace(process.env.NEWSDATA_API_KEY || '', 'API_KEY')}`);
+    
     const { data } = await firstValueFrom(
       this.httpService.get<INewsDataApiResponse>(apiUrl, {
         timeout: this.API_TIMEOUT,
       })
     );
     
-    return data?.results?.slice(0, this.MAX_ARTICLES) || [];
+    const articles = data?.results?.slice(0, this.MAX_ARTICLES) || [];
+    
+    if (articles.length > 0) {
+      this.logger.log(`Articles returned:`);
+      articles.forEach((article, index) => {
+        this.logger.log(`  ${index + 1}. "${article.title}"`);
+      });
+    }
+    
+    return articles;
   }
 
   private buildTickersQuery(tickers: string[]): string {
-    return tickers.map(ticker => ticker.toLowerCase()).join(" AND ");
+    return tickers.map(ticker => ticker.toLowerCase()).join(" OR ");
   }
 
   private buildApiUrl(tickersQuery: string): string {
@@ -113,7 +125,7 @@ export class NotificationScheduler {
       to: subscriber.email,
       subject: notification.title,
       text: notification.message || 'Here are the latest news articles based on your notification settings.',
-      html: this.buildEmailHtml(emailContent),
+      html: this.buildEmailHtml(emailContent, notification.message),
     });
     
     this.logger.log(`Email sent to ${subscriber.email} for notification ${notification.id}`);
@@ -145,11 +157,12 @@ export class NotificationScheduler {
     `;
   }
 
-  private buildEmailHtml(content: string): string {
+  private buildEmailHtml(content: string, message?: string): string {
     return `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        ${message ? `<p style="color: #333;">${message}</p>` : ''}
         <h2 style="color: #333; border-bottom: 2px solid #0066cc; padding-bottom: 10px;">
-          📈 Latest Market News
+          📈 Latest News
         </h2>
         ${content}
         <footer style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px;">
