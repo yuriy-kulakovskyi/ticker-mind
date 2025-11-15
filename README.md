@@ -1,98 +1,478 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Ticker Mind
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is the app that helps in analysing the market, generate automated reports and send news on subscribers' mails about tickers they are subscribed on
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## Acknowledgements
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+ - [NestJS Framework](https://nestjs.com/) - A progressive Node.js framework for building efficient and scalable server-side applications
+ - [Prisma ORM](https://www.prisma.io/) - Next-generation ORM for Node.js and TypeScript
+ - [React](https://react.dev/) - JavaScript library for building user interfaces
+ - [OpenAI API](https://openai.com/) - AI-powered market analysis and report generation
 
-## Project setup
 
-```bash
-$ npm install
-```
+## Environment Variables
 
-## Compile and run the project
+To run this project, you will need to add the following environment variables to your .env file
 
-```bash
-# development
-$ npm run start
+### Database
+`DATABASE_URL` - PostgreSQL database connection string
 
-# watch mode
-$ npm run start:dev
+### Authentication
+`VERIFY_TOKEN_URL` - URL for token verification endpoint
 
-# production mode
-$ npm run start:prod
-```
+`ALTERNATIVE_AUTH_API_KEY` - API key for alternative authentication service
 
-## Run tests
+### External APIs
+`GROQ_API_KEY` - Groq API key for AI-powered report generation
 
-```bash
-# unit tests
-$ npm run test
+`NEWSDATA_API_KEY` - NewsData.io API key for fetching market news
 
-# e2e tests
-$ npm run test:e2e
+`NEWSDATA_API_URL` - NewsData.io API base URL
 
-# test coverage
-$ npm run test:cov
-```
+### Email Service (Brevo)
+`BREVO_API_KEY` - Brevo API key for sending emails
 
-## Deployment
+`BREVO_API_URL` - Brevo API base URL
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+`BREVO_SENDER_EMAIL` - Email address for sending notifications
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Application
+`PORT` - Server port (default: 3000)
+
+`NODE_ENV` - Environment mode (development/production)
+
+
+## API Reference
+
+All authenticated endpoints require a valid JWT token in the Authorization header.
+
+## Usage Examples
+
+### Start the Application
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm install
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Example: Get All Watchlists
 
-## Resources
+```http
+GET /api/watchlist
+Authorization: Bearer <your_token>
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+### Example: Create a Report
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```http
+POST /api/report
+Authorization: Bearer <your_token>
+Content-Type: application/json
 
-## Support
+{
+  "title": "Weekly Market Overview",
+  <!-- Either tickers or watchlistId must be provided -->
+  "tickers": ["AAPL", "GOOGL"],
+  "watchlistId": "your_watchlist_id"
+}
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Example: Add Ticker to Watchlist
 
-## Stay in touch
+```http
+POST /api/watchlist/{id}/tickers
+Authorization: Bearer <your_token>
+Content-Type: application/json
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+{
+  "ticker": "MSFT"
+}
+```
 
-## License
+### Subscriber
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+#### Get current subscriber
+
+```http
+  GET /api/subscriber/me
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+#### Get subscriber by ID
+
+```http
+  GET /api/subscriber/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of subscriber to fetch |
+
+#### Create subscriber
+
+```http
+  POST /api/subscriber
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `displayName` | `string` | *Optional*. Display name (max 100 chars) |
+
+#### Update subscriber
+
+```http
+  PATCH /api/subscriber
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `displayName` | `string` | *Optional*. Updated display name |
+
+#### Delete subscriber
+
+```http
+  DELETE /api/subscriber
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+---
+
+### Watchlist
+
+All watchlist endpoints require authentication.
+
+#### Get all watchlists
+
+```http
+  GET /api/watchlist
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+#### Get watchlist by ID
+
+```http
+  GET /api/watchlist/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of watchlist to fetch |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+#### Create watchlist
+
+```http
+  POST /api/watchlist
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `name` | `string` | **Required**. Watchlist name (2-50 chars) |
+
+#### Update watchlist
+
+```http
+  PUT /api/watchlist/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of watchlist to update |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `name` | `string` | **Required**. Updated watchlist name (2-50 chars) |
+
+#### Add ticker to watchlist
+
+```http
+  POST /api/watchlist/${id}/tickers
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of watchlist |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `ticker` | `string` | **Required**. Ticker symbol (uppercase, max 10 chars) |
+
+#### Remove ticker from watchlist
+
+```http
+  DELETE /api/watchlist/${id}/tickers
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of watchlist |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `ticker` | `string` | **Required**. Ticker symbol to remove |
+
+#### Delete watchlist
+
+```http
+  DELETE /api/watchlist/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of watchlist to delete |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+---
+
+### Market
+
+#### Get market data
+
+```http
+  GET /api/market?ticker=${ticker}
+```
+
+Retrieves cached market data from database (fast).
+
+| Query Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `ticker` | `string` | **Required**. Stock ticker symbol |
+
+#### Sync market data
+
+```http
+  POST /api/market/sync?ticker=${ticker}
+```
+
+Fetches fresh data from external API and saves to database (slow, deliberate).
+
+| Query Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `ticker` | `string` | **Required**. Stock ticker symbol |
+
+---
+
+### Notification
+
+All notification endpoints require authentication.
+
+#### Get all notifications
+
+```http
+  GET /api/notification
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+#### Get notification by ID
+
+```http
+  GET /api/notification/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of notification to fetch |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+#### Create notification
+
+```http
+  POST /api/notification
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `title` | `string` | **Required**. Notification title |
+| `message` | `string` | **Required**. Notification message |
+| `tickers` | `string[]` | *Optional*. Array of ticker symbols if no watchlistId is provided |
+| `watchlistId` | `string` | *Optional*. Associated watchlist ID if no tickers are provided |
+
+#### Update notification
+
+```http
+  PATCH /api/notification/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of notification to update |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `title` | `string` | *Optional*. Updated title |
+| `message` | `string` | *Optional*. Updated message |
+| `tickers` | `string[]` | *Optional*. Updated array of tickers |
+
+#### Delete notification
+
+```http
+  DELETE /api/notification/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of notification to delete |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+---
+
+### Report
+
+All report endpoints require authentication.
+
+#### Get all reports
+
+```http
+  GET /api/report
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+#### Get report by ID
+
+```http
+  GET /api/report/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of report to fetch |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+#### Create report
+
+```http
+  POST /api/report
+```
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `title` | `string` | **Required**. Report title |
+| `tickers` | `string[]` | *Optional*. Array of ticker symbols if no watchlistId is provided |
+| `watchlistId` | `string` | *Optional*. Associated watchlist ID if no tickers are provided |
+
+#### Update report
+
+```http
+  PATCH /api/report/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of report to update |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+| Body Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `title` | `string` | **Required**. Updated report title |
+| `tickers` | `string[]` | *Optional*. Updated array of tickers |
+
+#### Delete report
+
+```http
+  DELETE /api/report/${id}
+```
+
+| Parameter | Type | Description |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `string` | **Required**. ID of report to delete |
+
+| Header | Type | Description |
+| :-------- | :------- | :------------------------- |
+| `Authorization` | `string` | **Required**. Bearer token |
+
+---
+
+## Appendix
+
+### Authentication
+All authenticated endpoints require a valid JWT token obtained from your authentication provider. Include the token in the Authorization header as: `Bearer <your_token>`
+
+### Rate Limiting
+API endpoints are cached for 300 seconds (5 minutes) to optimize performance and reduce database load.
+
+### Ticker Symbol Format
+Ticker symbols must be uppercase letters/numbers (A-Z, 0-9) and up to 10 characters long. Examples: `AAPL`, `GOOGL`, `MSFT`
+
+### Error Handling
+The API returns standard HTTP status codes:
+- `200 OK` - Successful GET/PATCH requests
+- `201 Created` - Successful POST requests
+- `204 No Content` - Successful DELETE requests
+- `400 Bad Request` - Invalid request data
+- `401 Unauthorized` - Missing or invalid authentication
+- `404 Not Found` - Resource not found
+
+
+## Authors
+
+- [@yuriy-kulakovskyi](https://www.github.com/yuriy-kulakovskyi)
