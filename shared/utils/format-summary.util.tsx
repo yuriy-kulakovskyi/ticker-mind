@@ -1,6 +1,6 @@
 import React from 'react';
 import { formatInlineStyles } from "./format-inline-styles.util";
-import { parseTable } from "./parse-table.utlil";
+import { parseTable } from "./parse-table.util";
 
 export function formatSummary(summary: string): React.ReactElement[] {
   const lines = summary.split('\n');
